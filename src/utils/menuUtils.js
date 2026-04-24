@@ -1,5 +1,7 @@
 // Detecta el tipo de proteína y devuelve el aviso de descongelar
-export function getProteinAlert(proteina) {
+// Si sobrante=true, no se necesita descongelar (son sobras de ayer)
+export function getProteinAlert(proteina, sobrante = false) {
+  if (sobrante) return null
   if (proteina === 'pollo') return '🐔 Saca el pollo del congelador'
   if (proteina === 'pescado') return '🐟 Saca el pescado del congelador'
   if (proteina === 'res') return '🥩 Saca la carne de res del congelador'

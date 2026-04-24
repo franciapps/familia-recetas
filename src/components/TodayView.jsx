@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Share2, ShoppingCart, Bell, ChevronDown, ChevronUp } from 'lucide-react'
+import { Share2, ShoppingCart, Bell, ChevronDown, ChevronUp, MessageCircle } from 'lucide-react'
 import { MENUS } from '../data/menus.js'
+import { SHOPPING } from '../data/shopping.js'
 import { LUNCH_SCHEDULE, DINNER_ALWAYS } from '../data/people.js'
 import {
   getProteinAlert,
@@ -27,8 +28,10 @@ export default function TodayView() {
   const lunchPeople = LUNCH_SCHEDULE[dayIndex] || []
   const dinnerPeople = DINNER_ALWAYS
 
-  // Alert for protein defrost
-  const proteinAlert = comida ? getProteinAlert(comida.proteina) : null
+  // Alert for protein defrost (skip if sobrante — leftover, no freezer needed)
+  // Also check cena (e.g. pescado on Fridays when comida is leftover chicken)
+  const proteinAlert = comida ? getProteinAlert(comida.proteina, comida.sobrante) : null
+  const cenaProteinAlert = (!proteinAlert && cena) ? getProteinAlert(cena.proteina, cena.sobrante) : null
 
   // Alert for legumes tomorrow
   const tomorrowMeal = week ? getTomorrowMeal(MENUS, week, dayIndex) : null
@@ -94,14 +97,14 @@ export default function TodayView() {
         </div>
 
         {/* Alerts */}
-        {proteinAlert && (
+        {(proteinAlert || cenaProteinAlert) && (
           <div className="bg-amber-50 border border-amber-300 rounded-xl p-3 flex items-start gap-2">
             <Bell className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
             <div>
               <p className="text-xs font-semibold text-amber-700 uppercase tracking-wide">
                 Alerta proteína
               </p>
-              <p className="text-sm text-amber-800">{proteinAlert}</p>
+              <p className="text-sm text-amber-800">{proteinAlert || cenaProteinAlert}</p>
             </div>
           </div>
         )}
@@ -226,20 +229,38 @@ export default function TodayView() {
           </div>
         )}
 
-        {/* Friday shopping link */}
-        {isFriday() && (
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 flex items-center gap-3">
-            <ShoppingCart className="w-5 h-5 text-purple-600 flex-shrink-0" />
-            <div>
-              <p className="text-sm font-semibold text-purple-800">
-                Hoy es viernes — día de súper
-              </p>
-              <p className="text-xs text-purple-600">
-                Revisa la lista en la pestaña Súper para la próxima semana.
-              </p>
+        {/* Friday shopping block */}
+        {isFriday() && (() => {
+          const nextWeek = week ? (week % 3) + 1 : 1
+          const verduras = (SHOPPING[nextWeek] || []).filter(i => i.categoria === 'Verduras')
+          const lista = verduras.map(i => `• ${i.articulo} — ${i.cantidad}`).join('\n')
+          const msg = `Buenas tardes, quería hacer un pedido a domicilio de esto:\n\n${lista}\n\n¿Me puede cotizar cuánto sería y mandarlo a mi dirección? Muchas gracias 🙏`
+          const waUrl = `https://wa.me/?text=${encodeURIComponent(msg)}`
+          return (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 space-y-3">
+              <div className="flex items-center gap-3">
+                <ShoppingCart className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold text-purple-800">
+                    Hoy es viernes — día de súper 🛒
+                  </p>
+                  <p className="text-xs text-purple-600">
+                    Lista Semana {nextWeek} lista en la pestaña Súper.
+                  </p>
+                </div>
+              </div>
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold text-sm py-2.5 rounded-xl transition-colors w-full"
+              >
+                <MessageCircle className="w-4 h-4" />
+                📲 Pedir verduras al mercado
+              </a>
             </div>
-          </div>
-        )}
+          )
+        })()}
       </div>
     </div>
   )

@@ -59,8 +59,8 @@ export default async function handler(req, res) {
   const tomorrowName = DAY_NAMES[tomorrowIndex]
   const tomorrow = MENUS[tomorrowWeek]?.[tomorrowName]?.comida
 
-  if (!tomorrow || tomorrow.proteina !== 'legumbres') {
-    return res.status(200).json({ mensaje: 'Mañana no hay legumbres' })
+  if (!tomorrow || tomorrow.proteina !== 'legumbres' || tomorrow.remojo === false) {
+    return res.status(200).json({ mensaje: 'Mañana no hay legumbres que remojar' })
   }
 
   const legumbreName = LEGUMBRE_NAMES[tomorrow.legumbre] || 'las legumbres'

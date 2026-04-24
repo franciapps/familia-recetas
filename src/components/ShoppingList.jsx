@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ShoppingCart, RotateCcw, CheckSquare } from 'lucide-react'
+import { ShoppingCart, RotateCcw, MessageCircle } from 'lucide-react'
 import { SHOPPING } from '../data/shopping.js'
 import { groupByCategoria, calcTotal } from '../utils/menuUtils.js'
 import { getCurrentWeekAndDay, getShoppingWeek } from '../utils/dateUtils.js'
@@ -93,7 +93,13 @@ export default function ShoppingList() {
           </div>
         )}
 
-        {Object.entries(groups).map(([categoria, catItems]) => (
+        {Object.entries(groups)
+          .sort(([a], [b]) => {
+            if (a === 'Verduras') return 1
+            if (b === 'Verduras') return -1
+            return 0
+          })
+          .map(([categoria, catItems]) => (
           <div key={categoria} className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
             <div className="bg-gray-50 px-4 py-2 border-b border-gray-200 flex items-center gap-2">
               <span>{catIcon[categoria] || '🛒'}</span>
@@ -159,6 +165,7 @@ export default function ShoppingList() {
             </ul>
           </div>
         ))}
+
 
         {/* Total */}
         <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-between">
