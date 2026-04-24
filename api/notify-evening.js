@@ -1,49 +1,88 @@
-// Vercel cron function: send evening notification (legume soaking alert)
-// Runs at 20:00 Mexico City time (02:00 UTC next day) Mon–Thu
-// Triggered by Vercel cron as defined in vercel.json
-
 import webpush from 'web-push'
+import { createClient } from '@supabase/supabase-js'
+import { MENUS } from '../src/data/menus.js'
 
-const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY
-const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY
-const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:familia@example.com'
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+)
 
-if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
-  webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY)
+webpush.setVapidDetails(
+  `mailto:${process.env.VAPID_EMAIL}`,
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
+)
+
+const DAY_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+
+const LEGUMBRE_NAMES = {
+  frijoles: 'los frijoles',
+  lentejas: 'las lentejas',
+  garbanzos: 'los garbanzos',
+}
+
+function calcWeek(weekConfig) {
+  const start = new Date(weekConfig.start_date)
+  const today = new Date()
+  start.setHours(0, 0, 0, 0)
+  today.setHours(0, 0, 0, 0)
+  const diffWeeks = Math.floor((today - start) / (1000 * 60 * 60 * 24 * 7))
+  return ((weekConfig.week - 1 + diffWeeks) % 3) + 1
 }
 
 export default async function handler(req, res) {
-  const authHeader = req.headers.authorization
-  const cronSecret = process.env.CRON_SECRET
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (req.headers['authorization'] !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'No autorizado' })
   }
 
-  try {
-    // TODO: load subscriptions from DB
-    // const subscriptions = await db.subscriptions.findAll()
-    const subscriptions = []
+  // Use Mexico City time
+  const now = new Date()
+  const mxTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }))
+  const todayIndex = mxTime.getDay()
 
-    const today = new Date()
-    const dayIndex = today.getDay()
-    // Only send Mon–Thu (tomorrow has a menu)
-    if (dayIndex === 0 || dayIndex === 5 || dayIndex === 6) {
-      return res.status(200).json({ mensaje: 'No aplica hoy' })
-    }
-
-    const payload = JSON.stringify({
-      title: 'Buenas noches 🌙',
-      body: 'Revisa si hay que poner a remojar legumbres para mañana.',
-    })
-
-    const results = await Promise.allSettled(
-      subscriptions.map((sub) => webpush.sendNotification(sub, payload))
-    )
-
-    const sent = results.filter((r) => r.status === 'fulfilled').length
-    return res.status(200).json({ ok: true, enviadas: sent })
-  } catch (err) {
-    console.error('Error en notify-evening:', err)
-    return res.status(500).json({ error: 'Error interno' })
+  // No evening notification on Friday or Saturday (no menu next day)
+  if (todayIndex === 5 || todayIndex === 6 || todayIndex === 0) {
+    return res.status(200).json({ mensaje: 'No aplica hoy' })
   }
+
+  const { data: wc } = await supabase.from('week_config').select('*').single()
+  if (!wc?.start_date) return res.status(200).json({ mensaje: 'Semana no configurada' })
+
+  const week = calcWeek(wc)
+
+  // Get TOMORROW's menu
+  const tomorrowIndex = todayIndex + 1
+  let tomorrowWeek = week
+  // If tomorrow is Monday (new week)
+  if (tomorrowIndex === 1) tomorrowWeek = (week % 3) + 1
+
+  const tomorrowName = DAY_NAMES[tomorrowIndex]
+  const tomorrow = MENUS[tomorrowWeek]?.[tomorrowName]?.comida
+
+  if (!tomorrow || tomorrow.proteina !== 'legumbres') {
+    return res.status(200).json({ mensaje: 'Mañana no hay legumbres' })
+  }
+
+  const legumbreName = LEGUMBRE_NAMES[tomorrow.legumbre] || 'las legumbres'
+  const body = `Mañana toca: ${tomorrow.nombre}\nPon ${legumbreName} en remojo esta noche 💧\n(para la olla express)`
+
+  const { data: subs } = await supabase.from('push_subscriptions').select('*')
+  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones' })
+
+  const payload = JSON.stringify({ title: '¡Para mañana! 🌙', body })
+
+  const results = await Promise.allSettled(
+    subs.map(s => webpush.sendNotification(
+      { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },
+      payload
+    ))
+  )
+
+  const expired = subs.filter((_, i) => results[i].status === 'rejected')
+  if (expired.length) {
+    await supabase.from('push_subscriptions').delete()
+      .in('endpoint', expired.map(s => s.endpoint))
+  }
+
+  return res.status(200).json({ ok: true, enviadas: results.filter(r => r.status === 'fulfilled').length })
 }

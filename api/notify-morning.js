@@ -1,49 +1,82 @@
-// Vercel cron function: send morning notification (protein defrost alert)
-// Runs at 08:00 Mexico City time (14:00 UTC) Mon–Fri
-// Triggered by Vercel cron as defined in vercel.json
-
 import webpush from 'web-push'
+import { createClient } from '@supabase/supabase-js'
+import { MENUS } from '../src/data/menus.js'
 
-const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY
-const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY
-const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:familia@example.com'
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+)
 
-if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
-  webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY)
+webpush.setVapidDetails(
+  `mailto:${process.env.VAPID_EMAIL}`,
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
+)
+
+const DAY_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+
+function calcWeek(weekConfig) {
+  const start = new Date(weekConfig.start_date)
+  const today = new Date()
+  start.setHours(0, 0, 0, 0)
+  today.setHours(0, 0, 0, 0)
+  const diffWeeks = Math.floor((today - start) / (1000 * 60 * 60 * 24 * 7))
+  return ((weekConfig.week - 1 + diffWeeks) % 3) + 1
+}
+
+function proteinAlert(proteina) {
+  if (proteina === 'pollo') return '🐔 Saca el pollo del congelador'
+  if (proteina === 'pescado') return '🐟 Saca el pescado del congelador'
+  if (proteina === 'res') return '🥩 Saca la carne de res del congelador'
+  if (proteina === 'cerdo') return '🥩 Saca la carne de cerdo del congelador'
+  return null
 }
 
 export default async function handler(req, res) {
-  // Allow Vercel cron or manual trigger with secret
-  const authHeader = req.headers.authorization
-  const cronSecret = process.env.CRON_SECRET
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (req.headers['authorization'] !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'No autorizado' })
   }
 
-  try {
-    // TODO: load subscriptions from DB
-    // const subscriptions = await db.subscriptions.findAll()
-    const subscriptions = []
+  // Use Mexico City time
+  const now = new Date()
+  const mxTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }))
+  const dayIndex = mxTime.getDay()
 
-    const today = new Date()
-    const dayIndex = today.getDay() // 0=Dom, 1=Lun...
-    if (dayIndex === 0 || dayIndex === 6) {
-      return res.status(200).json({ mensaje: 'Fin de semana, sin notificación' })
-    }
-
-    const payload = JSON.stringify({
-      title: '¡Buenos días! 🍳',
-      body: 'Revisa si hay que descongelar proteína para hoy.',
-    })
-
-    const results = await Promise.allSettled(
-      subscriptions.map((sub) => webpush.sendNotification(sub, payload))
-    )
-
-    const sent = results.filter((r) => r.status === 'fulfilled').length
-    return res.status(200).json({ ok: true, enviadas: sent })
-  } catch (err) {
-    console.error('Error en notify-morning:', err)
-    return res.status(500).json({ error: 'Error interno' })
+  if (dayIndex === 0 || dayIndex === 6) {
+    return res.status(200).json({ mensaje: 'Fin de semana' })
   }
+
+  const { data: wc } = await supabase.from('week_config').select('*').single()
+  if (!wc?.start_date) return res.status(200).json({ mensaje: 'Semana no configurada' })
+
+  const week = calcWeek(wc)
+  const dayName = DAY_NAMES[dayIndex]
+  const comida = MENUS[week]?.[dayName]?.comida
+  if (!comida) return res.status(200).json({ mensaje: 'Sin menú' })
+
+  let body = `Hoy toca: *${comida.nombre}*`
+  const alert = proteinAlert(comida.proteina)
+  if (alert) body += `\n${alert}`
+  if (comida.proteina === 'legumbres') body += '\n🫘 Usar olla express'
+
+  const { data: subs } = await supabase.from('push_subscriptions').select('*')
+  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones' })
+
+  const payload = JSON.stringify({ title: '¡Buenos días! 🌅', body })
+
+  const results = await Promise.allSettled(
+    subs.map(s => webpush.sendNotification(
+      { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },
+      payload
+    ))
+  )
+
+  // Remove expired subscriptions
+  const expired = subs.filter((_, i) => results[i].status === 'rejected')
+  if (expired.length) {
+    await supabase.from('push_subscriptions').delete()
+      .in('endpoint', expired.map(s => s.endpoint))
+  }
+
+  return res.status(200).json({ ok: true, enviadas: results.filter(r => r.status === 'fulfilled').length })
 }

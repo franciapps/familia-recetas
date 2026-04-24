@@ -17,11 +17,23 @@ export default function Settings() {
     getNotificationStatus().then(setNotifStatus)
   }, [])
 
-  const handleSaveWeek = () => {
+  const handleSaveWeek = async () => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const startDate = today.toISOString()
     setWeekConfig(selectedWeek)
+    // Also save to Supabase for server-side notifications
+    try {
+      await fetch('/api/set-week', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ week: selectedWeek, startDate }),
+      })
+    } catch (e) {
+      console.warn('No se pudo sincronizar semana con servidor:', e)
+    }
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
-    // Force reload to reflect new week
     window.dispatchEvent(new Event('weekConfigChanged'))
   }
 
