@@ -4,6 +4,14 @@ import { SHOPPING } from '../data/shopping.js'
 import { groupByCategoria, calcTotal } from '../utils/menuUtils.js'
 import { getCurrentWeekAndDay, getShoppingWeek } from '../utils/dateUtils.js'
 
+// Pollo que David pide consolidado (vale 2–3 semanas)
+const POLLO_ORDER = [
+  '• 1 pollo entero para asar (1.5–2 kg)',
+  '• 1 kg de pierna y muslo',
+  '• 1 kg de pechuga entera',
+].join('\n')
+const POLLO_MSG = `Hola! Necesito hacer un pedido de pollo para las próximas semanas:\n\n${POLLO_ORDER}\n\n¿Me puede cotizar y confirmar disponibilidad? Gracias 🙏`
+
 const STORAGE_KEY = 'shoppingChecked'
 
 export default function ShoppingList() {
@@ -49,9 +57,13 @@ export default function ShoppingList() {
   const catIcon = {
     'Carne / Pescado': '🥩',
     'Huevos / Lácteos': '🥚',
+    Cereales: '🌾',
+    Legumbres: '🫘',
     Verduras: '🥦',
     Fruta: '🍎',
     'Tortillas y Pan': '🫓',
+    'Despensa (cada 3 sem)': '📦',
+    'Despensa (cada mes)': '🗓️',
   }
 
   return (
@@ -92,6 +104,17 @@ export default function ShoppingList() {
             Configura la semana en Ajustes para ver la lista correcta.
           </div>
         )}
+
+        {/* David pedir pollo */}
+        <a
+          href={`https://wa.me/?text=${encodeURIComponent(POLLO_MSG)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold text-sm py-3 rounded-xl transition-colors w-full"
+        >
+          <MessageCircle className="w-4 h-4" />
+          🐔 David — pedir pollo (2–3 semanas)
+        </a>
 
         {Object.entries(groups)
           .sort(([a], [b]) => {
