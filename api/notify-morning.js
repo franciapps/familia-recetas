@@ -24,7 +24,8 @@ function calcWeek(weekConfig) {
   return ((weekConfig.week - 1 + diffWeeks) % 3) + 1
 }
 
-function proteinAlert(proteina) {
+function proteinAlert(proteina, sobrante = false) {
+  if (sobrante) return null
   if (proteina === 'pollo') return '🐔 Saca el pollo del congelador'
   if (proteina === 'pescado') return '🐟 Saca el pescado del congelador'
   if (proteina === 'res') return '🥩 Saca la carne de res del congelador'
@@ -51,11 +52,19 @@ export default async function handler(req, res) {
 
   const week = calcWeek(wc)
   const dayName = DAY_NAMES[dayIndex]
-  const comida = MENUS[week]?.[dayName]?.comida
+  const todayMenu = MENUS[week]?.[dayName]
+  const comida = todayMenu?.comida
+  const cena = todayMenu?.cena
   if (!comida) return res.status(200).json({ mensaje: 'Sin menú' })
 
   let body = `Hoy toca: *${comida.nombre}*`
-  const alert = proteinAlert(comida.proteina)
+
+  // Protein alert: skip if sobrante (leftovers, nothing to defrost)
+  const comidaAlert = proteinAlert(comida.proteina, comida.sobrante)
+  // Also check cena in case it has a different protein (e.g. pescado on Tue S1)
+  const cenaAlert = !comidaAlert && cena ? proteinAlert(cena.proteina, cena.sobrante) : null
+  const alert = comidaAlert || cenaAlert
+
   if (alert) body += `\n${alert}`
   if (comida.proteina === 'legumbres') body += '\n🫘 Usar olla express'
 

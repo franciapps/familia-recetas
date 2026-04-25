@@ -6,7 +6,11 @@
     },
     {
       "path": "/api/notify-evening",
-      "schedule": "0 2 * * 2-5"
+      "schedule": "0 23 * * 1-4"
+    },
+    {
+      "path": "/api/notify-friday",
+      "schedule": "0 19 * * 5"
     }
   ]
 }
