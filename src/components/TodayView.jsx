@@ -70,6 +70,75 @@ export default function TodayView() {
   }
 
   if (!todayMenu) {
+    // Weekend: show CB suggestion + verduras button
+    if (isWeekend()) {
+      const rec = week ? CB_WEEKEND[week] : null
+      const nextWeek = week ? (week % 3) + 1 : 1
+      const verduras = (SHOPPING[nextWeek] || []).filter(i => i.categoria === 'Verduras')
+      const lista = verduras.map(i => `• ${i.articulo} — ${i.cantidad}`).join('\n')
+      const msg = `Buenas tardes, quería hacer un pedido a domicilio de esto:\n\n${lista}\n\n¿Me puede cotizar cuánto sería y mandarlo a mi dirección? Muchas gracias 🙏`
+      const waUrl = `https://wa.me/?text=${encodeURIComponent(msg)}`
+
+      return (
+        <div className="pb-6">
+          <div className="bg-emerald-600 text-white px-4 py-4">
+            <h1 className="text-2xl font-bold capitalize">¡Fin de semana! 🌴</h1>
+            <p className="text-sm opacity-80 capitalize mt-0.5">{getTodayDateString()}</p>
+          </div>
+          <div className="px-4 space-y-4 mt-4">
+            {/* Verduras button */}
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 space-y-3">
+              <div className="flex items-center gap-3">
+                <ShoppingCart className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold text-purple-800">¿Olvidaste pedir las verduras? 🛒</p>
+                  <p className="text-xs text-purple-600">Lista Semana {nextWeek} en la pestaña Súper.</p>
+                </div>
+              </div>
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold text-sm py-2.5 rounded-xl transition-colors w-full"
+              >
+                <MessageCircle className="w-4 h-4" />
+                📲 Pedir verduras al mercado
+              </a>
+            </div>
+
+            {/* CB weekend suggestion */}
+            {rec && (
+              <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 space-y-2">
+                <p className="text-xs font-semibold text-teal-700 uppercase tracking-wide">
+                  ¿Qué cocinar este fin de semana? 🌿
+                </p>
+                <p className="text-sm text-teal-800 italic">
+                  "¿Por qué no cocinas una bella zuppa, lasagna o un ragú este domingo?"
+                </p>
+                <div className="flex items-start gap-2 mt-1">
+                  <span className="text-2xl">{rec.emoji}</span>
+                  <div>
+                    <p className="text-sm font-bold text-teal-900">{rec.nome}</p>
+                    <p className="text-xs text-teal-700 mt-0.5">{rec.descrizione}</p>
+                    <a
+                      href={rec.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-emerald-700 text-xs font-medium hover:underline"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      Ver receta en Cucina Botanica →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )
+    }
+
+    // Non-weekend day with no menu (shouldn't happen, but fallback)
     return (
       <div className="flex flex-col items-center justify-center min-h-64 p-6 text-center">
         <div className="text-4xl mb-4">🌴</div>
