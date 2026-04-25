@@ -277,8 +277,8 @@ export default function TodayView() {
           )
         })()}
 
-        {/* Friday shopping block */}
-        {isFriday() && (() => {
+        {/* Friday/weekend shopping block */}
+        {(isFriday() || isWeekend()) && (() => {
           const nextWeek = week ? (week % 3) + 1 : 1
           const verduras = (SHOPPING[nextWeek] || []).filter(i => i.categoria === 'Verduras')
           const lista = verduras.map(i => `• ${i.articulo} — ${i.cantidad}`).join('\n')
@@ -290,7 +290,7 @@ export default function TodayView() {
                 <ShoppingCart className="w-5 h-5 text-purple-600 flex-shrink-0" />
                 <div>
                   <p className="text-sm font-semibold text-purple-800">
-                    Hoy es viernes — día de súper 🛒
+                    {isFriday() ? 'Hoy es viernes — día de súper 🛒' : '¿Olvidaste pedir las verduras? 🛒'}
                   </p>
                   <p className="text-xs text-purple-600">
                     Lista Semana {nextWeek} lista en la pestaña Súper.
