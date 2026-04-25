@@ -6,17 +6,17 @@ export const SHOPPING = {
   1: [
     // Carne / Pescado
     { categoria: 'Carne / Pescado', articulo: 'Chambarete (stinco de res con hueso)', cantidad: '800 g', precio: 100 },
-    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 280 },
-    { categoria: 'Carne / Pescado', articulo: 'Salmon noruego', cantidad: '400 g', precio: 160 },
+    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 400 },
+    { categoria: 'Carne / Pescado', articulo: 'Salmon noruego', cantidad: '400 g', precio: 240 },
     // Huevos / Lácteos
-    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 150 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 190 },
     { categoria: 'Huevos / Lácteos', articulo: 'Yogurt Flor de Alfalfa', cantidad: '1 kg', precio: 70 },
-    { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 80 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 161 },
     { categoria: 'Huevos / Lácteos', articulo: 'Queso panela La Huaxtequita', cantidad: '1/2 kg', precio: 60 },
-    { categoria: 'Huevos / Lácteos', articulo: 'Queso oaxaca La Huaxtequita', cantidad: '1/2 kg', precio: 70 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Queso oaxaca La Huaxtequita', cantidad: '1/2 kg', precio: 110 },
     // Cereales
     { categoria: 'Cereales', articulo: 'Arroz blanco', cantidad: '2 kg', precio: 50 },
-    { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 150 },
+    { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 120 },
     // Legumbres
     { categoria: 'Legumbres', articulo: 'Frijoles negros secos', cantidad: '1 kg', precio: 40 },
     { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '500 g', precio: 25 },
@@ -49,31 +49,31 @@ export const SHOPPING = {
     { categoria: 'Tortillas y Pan', articulo: 'Tortillas de maíz frescas', cantidad: '1 kg', precio: 25 },
     // Despensa cada 3 semanas (solo S1)
     { categoria: 'Despensa (cada 3 sem)', articulo: 'Mantequilla Lurpak', cantidad: '250 g', precio: 80 },
-    { categoria: 'Despensa (cada 3 sem)', articulo: 'Granola Dasavena Chocolate', cantidad: '500 g', precio: 150 },
+    { categoria: 'Despensa (cada 3 sem)', articulo: 'Granola Dasavena Chocolate', cantidad: '500 g', precio: 120 },
     { categoria: 'Despensa (cada 3 sem)', articulo: 'Avena Granvita', cantidad: '500 g', precio: 45 },
     { categoria: 'Despensa (cada 3 sem)', articulo: 'Pasta Rummo (varios formatos)', cantidad: '5 paquetes', precio: 350 },
-    { categoria: 'Despensa (cada 3 sem)', articulo: 'Frijoles orlotti (cannellini) en lata', cantidad: '3 latas', precio: 120 },
-    { categoria: 'Despensa (cada 3 sem)', articulo: 'Atún Ortiz', cantidad: '1 frasco', precio: 180 },
+    { categoria: 'Despensa (cada 3 sem)', articulo: 'Passata di pomodoro Orlotti', cantidad: '3 botellas', precio: 204 },
+    { categoria: 'Despensa (cada 3 sem)', articulo: 'Atún Ortiz', cantidad: '1 frasco 220g', precio: 340 },
     { categoria: 'Despensa (cada 3 sem)', articulo: 'Alcaparras', cantidad: '1 frasco', precio: 70 },
     { categoria: 'Despensa (cada 3 sem)', articulo: 'Anchoas en aceite', cantidad: '1 frasco', precio: 120 },
     // Despensa mensual (solo S1)
     { categoria: 'Despensa (cada mes)', articulo: 'Harina de trigo 00', cantidad: '1 kg', precio: 25 },
-    { categoria: 'Despensa (cada mes)', articulo: 'Farro', cantidad: '1 kg', precio: 50 },
+    { categoria: 'Despensa (cada mes)', articulo: 'Farro', cantidad: '1 kg', precio: 184 },
   ],
 
   2: [
     // Carne / Pescado
     { categoria: 'Carne / Pescado', articulo: 'Chambarete (stinco de res con hueso)', cantidad: '1.5 kg', precio: 135 },
-    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 280 },
+    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 400 },
     // Huevos / Lácteos
-    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 150 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 190 },
     { categoria: 'Huevos / Lácteos', articulo: 'Yogurt Flor de Alfalfa', cantidad: '1 kg', precio: 70 },
-    { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 80 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 161 },
     { categoria: 'Huevos / Lácteos', articulo: 'Queso panela La Huaxtequita', cantidad: '1/2 kg', precio: 60 },
-    { categoria: 'Huevos / Lácteos', articulo: 'Queso oaxaca La Huaxtequita', cantidad: '1/2 kg', precio: 70 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Queso oaxaca La Huaxtequita', cantidad: '1/2 kg', precio: 110 },
     // Cereales
     { categoria: 'Cereales', articulo: 'Arroz blanco', cantidad: '2 kg', precio: 50 },
-    { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 150 },
+    { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 120 },
     // Legumbres
     { categoria: 'Legumbres', articulo: 'Garbanzos secos', cantidad: '500 g', precio: 30 },
     { categoria: 'Legumbres', articulo: 'Frijoles negros secos', cantidad: '1 kg', precio: 40 },
@@ -111,16 +111,16 @@ export const SHOPPING = {
   3: [
     // Carne / Pescado
     { categoria: 'Carne / Pescado', articulo: 'Arrachera (falda de res)', cantidad: '800 g', precio: 240 },
-    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 280 },
+    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 400 },
     // Huevos / Lácteos
-    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 150 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 190 },
     { categoria: 'Huevos / Lácteos', articulo: 'Yogurt Flor de Alfalfa', cantidad: '1 kg', precio: 70 },
-    { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 80 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 161 },
     { categoria: 'Huevos / Lácteos', articulo: 'Queso panela La Huaxtequita', cantidad: '1/2 kg', precio: 60 },
-    { categoria: 'Huevos / Lácteos', articulo: 'Queso oaxaca La Huaxtequita', cantidad: '1/2 kg', precio: 70 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Queso oaxaca La Huaxtequita', cantidad: '1/2 kg', precio: 110 },
     // Cereales
     { categoria: 'Cereales', articulo: 'Arroz blanco', cantidad: '2 kg', precio: 50 },
-    { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 150 },
+    { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 120 },
     // Legumbres
     { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '1 kg', precio: 45 },
     { categoria: 'Legumbres', articulo: 'Frijoles negros secos', cantidad: '1 kg', precio: 40 },
@@ -178,7 +178,7 @@ export const PANTRY = [
   // Conservas
   { categoria: 'Conservas', articulo: 'Passata di pomodoro', cantidad: '3 botellas', precio: 150 },
   { categoria: 'Conservas', articulo: 'Polpa di pomodoro', cantidad: '500 g', precio: 25 },
-  { categoria: 'Conservas', articulo: 'Frijoles orlotti (cannellini) en lata', cantidad: '3 latas', precio: 120 },
+  { categoria: 'Conservas', articulo: 'Passata di pomodoro Orlotti', cantidad: '3 botellas', precio: 204 },
   { categoria: 'Conservas', articulo: 'Atún Ortiz', cantidad: '1 frasco', precio: 180 },
   { categoria: 'Conservas', articulo: 'Aceitunas verdes sin hueso', cantidad: '400 g', precio: 100 },
   { categoria: 'Conservas', articulo: 'Aceitunas negras', cantidad: '200 g', precio: 60 },
