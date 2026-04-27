@@ -40,8 +40,8 @@ export default async function handler(req, res) {
   const mxTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }))
   const todayIndex = mxTime.getDay()
 
-  // No evening notification on Friday or Saturday (no menu next day)
-  if (todayIndex === 5 || todayIndex === 6 || todayIndex === 0) {
+  // Only fire Sun–Thu (no point on Fri/Sat — weekend has no menu)
+  if (todayIndex === 5 || todayIndex === 6) {
     return res.status(200).json({ mensaje: 'No aplica hoy' })
   }
 
@@ -50,21 +50,33 @@ export default async function handler(req, res) {
 
   const week = calcWeek(wc)
 
-  // Get TOMORROW's menu
-  const tomorrowIndex = todayIndex + 1
+  // Get TOMORROW's index and name
+  // Sunday(0)+1=1(Mon), Mon(1)+1=2(Tue), ..., Thu(4)+1=5(Fri)
+  const tomorrowIndex = todayIndex === 0 ? 1 : todayIndex + 1
   let tomorrowWeek = week
-  // If tomorrow is Monday (new week)
+  // If tomorrow is Monday, advance to next week in the cycle
   if (tomorrowIndex === 1) tomorrowWeek = (week % 3) + 1
 
   const tomorrowName = DAY_NAMES[tomorrowIndex]
-  const tomorrow = MENUS[tomorrowWeek]?.[tomorrowName]?.comida
+  const tomorrowMenu = MENUS[tomorrowWeek]?.[tomorrowName]
 
-  if (!tomorrow || tomorrow.proteina !== 'legumbres' || tomorrow.remojo === false) {
+  // Check both comida and cena for legumes needing soaking
+  const needsSoaking = (meal) =>
+    meal && meal.proteina === 'legumbres' && meal.remojo === true
+
+  const meal = needsSoaking(tomorrowMenu?.comida)
+    ? tomorrowMenu.comida
+    : needsSoaking(tomorrowMenu?.cena)
+    ? tomorrowMenu.cena
+    : null
+
+  if (!meal) {
     return res.status(200).json({ mensaje: 'Mañana no hay legumbres que remojar' })
   }
 
-  const legumbreName = LEGUMBRE_NAMES[tomorrow.legumbre] || 'las legumbres'
-  const body = `Mañana toca: ${tomorrow.nombre}\nPon ${legumbreName} en remojo esta noche 💧\n(para la olla express)`
+  const legumbreName = LEGUMBRE_NAMES[meal.legumbre] || 'las legumbres'
+  const mealName = tomorrowMenu?.comida === meal ? tomorrowMenu.comida.nombre : tomorrowMenu.cena.nombre
+  const body = `Mañana toca: ${mealName}\nPon ${legumbreName} en remojo esta noche 💧`
 
   const { data: subs } = await supabase.from('push_subscriptions').select('*')
   if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones' })
