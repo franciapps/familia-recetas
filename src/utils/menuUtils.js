@@ -29,7 +29,7 @@ export function buildShareMessage(meal, lunchPeople, dinnerPeople) {
   if (!meal) return ''
   const lunchList = lunchPeople.join(', ')
   const dinnerList = dinnerPeople.join(', ')
-  return `¡Hola! ¿Me ayudas cocinando esto hoy? 🍳\n*${meal.nombre}*\n${meal.descripcion}\n\n👨‍👩‍👧‍👦 Para la comida: ${lunchList}\n🌙 Y que sobre para la cena: ${dinnerList}`
+  return `¡Hola! ¿Me ayuda cocinando esto hoy? 🍳\n*${meal.nombre}*\n${meal.descripcion}\n\n👨‍👩‍👧‍👦 Para la comida: ${lunchList}\n🌙 Y que sobre para la cena: ${dinnerList}`
 }
 
 // Agrupa los artículos de la lista por categoría

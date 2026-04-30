@@ -11,6 +11,10 @@
     {
       "path": "/api/notify-friday",
       "schedule": "0 19 * * 5"
+    },
+    {
+      "path": "/api/notify-monday",
+      "schedule": "0 13 * * 1"
     }
   ]
 }

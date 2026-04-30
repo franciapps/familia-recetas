@@ -9,11 +9,11 @@ export const FAMILY = {
 
 // Quién come a la hora de la comida cada día (0=Dom, 1=Lun, ..., 5=Vie, 6=Sáb)
 export const LUNCH_SCHEDULE = {
-  1: ['David', 'Franci', 'Adri', 'Sandy', 'Yola'],    // Lunes
-  2: ['Francesca', 'Franci', 'Adri', 'Sandy'],          // Martes
-  3: ['Franci', 'Adri', 'Sandy', 'Yola'],               // Miércoles
-  4: ['Franci', 'Adri', 'Sandy', 'Yola'],               // Jueves
-  5: ['Francesca', 'David', 'Franci', 'Adri', 'Sandy'], // Viernes
+  1: ['David', 'Adri', 'Sandy', 'Yola', 'Franci 👶'],    // Lunes
+  2: ['Francesca', 'Adri', 'Sandy', 'Franci 👶'],          // Martes
+  3: ['Adri', 'Sandy', 'Yola', 'Franci 👶'],               // Miércoles
+  4: ['Adri', 'Sandy', 'Yola', 'Franci 👶'],               // Jueves
+  5: ['Francesca', 'David', 'Adri', 'Sandy', 'Franci 👶'], // Viernes
 }
 
 export const DINNER_ALWAYS = ['Francesca', 'David', 'Adri', 'Franci']
