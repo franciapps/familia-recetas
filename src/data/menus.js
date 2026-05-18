@@ -147,20 +147,19 @@ export const MENUS = {
         notas: 'Para Franci: pappa de lentejas congelada + calabacitas en puré.',
       },
       cena: {
-        nombre: 'Pollo al limón y romero con papas y calabacitas',
-        descripcion: 'Pollo al limón y romero con papas al horno y calabacitas a la plancha. Sobra pollo para el viernes. 🍮 Postre: mango',
-        proteina: 'pollo',
-        notas: 'Para Franci: licuar. Guardar pollo sobrante.',
+        nombre: 'Seabass al horno con espinacas y limón',
+        descripcion: 'Seabass (robalo) al horno con espinacas salteadas, limón y aceite de oliva. Con arroz blanco. 🍮 Postre: mango',
+        proteina: 'pescado',
+        notas: 'Para Franci: seabass desmigado sin espinas + arroz + espinacas en puré.',
       },
     },
     Viernes: {
       desayuno: 'Hotcakes de avena y plátano — para Franci: machacado',
       comida: {
-        nombre: 'Ensalada de farro con pollo sobrante',
-        descripcion: 'Ensalada de farro con pollo sobrante del jueves, chícharos, jitomates, pepino, queso oaxaca y aceite de oliva. Con pan.',
-        proteina: 'pollo',
-        sobrante: true,
-        notas: 'Con lo que sobró del jueves. Para Franci: farro picado + pollo en puré + chícharos.',
+        nombre: 'Ensalada de farro con atún Ortiz y alcaparras',
+        descripcion: 'Ensalada de farro con atún Ortiz, alcaparras, jitomates, pepino y aceite de oliva. Con pan.',
+        proteina: 'pescado',
+        notas: 'Para Franci: farro picado + atún desmigado + jitomate.',
       },
       cena: {
         nombre: 'Pasta con pomodori e cannellini (Cucina Botanica)',

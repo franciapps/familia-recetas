@@ -63,7 +63,6 @@ export const SHOPPING = {
 
   2: [
     // Carne / Pescado
-    { categoria: 'Carne / Pescado', articulo: 'Chambarete (stinco de res con hueso)', cantidad: '1.5 kg', precio: 135 },
     { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 400 },
     // Huevos / Lácteos
     { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 190 },
