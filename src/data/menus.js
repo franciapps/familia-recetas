@@ -92,25 +92,27 @@ export const MENUS = {
     Lunes: {
       desayuno: 'Porridge de avena Granvita con manzana cocida — para Franci: avena con manzana',
       comida: {
-        nombre: 'Chambarete guisado a la mexicana',
-        descripcion: 'Chambarete de res guisado lentamente (~2.5 horas) con zanahorias, papas, calabacitas, jitomate, cebolla y ajo. Con arroz y tortillas. Abundante — la carne y el caldo sobran para el martes.',
-        proteina: 'res',
-        notas: 'Para Franci: pappa de lentejas congelada + zanahorias en puré (sin chambarete). ⚠️ Cocinar SIN SAL. Empezar temprano — cocción ~2.5 horas.',
+        nombre: 'Pollo al horno con papas, zanahorias y salsa verde',
+        descripcion: 'Pollo entero al horno con papas y zanahorias asadas, salsa verde de tomatillo. Con arroz y tortillas. Abundante — sobra pollo para el martes.',
+        proteina: 'pollo',
+        notas: 'Para Franci: pollo deshebrado + papas y zanahorias en puré. ⚠️ Cocinar SIN SAL. Guardar pollo sobrante para el martes.',
       },
       cena: {
-        nombre: 'Cena ligera: chambarete sobrante y huevos rancheros',
-        descripcion: 'Francesca: chambarete + arroz sobrantes. David: huevos rancheros rápidos con queso Murlota. Adri: carne deshebrada + arroz. 🍮 Postre: mamey',
-        proteina: 'huevo',
+        nombre: 'Cena ligera: pollo sobrante y quesadillas',
+        descripcion: 'Pollo sobrante del horno con arroz. David: quesadilla con queso oaxaca. 🍮 Postre: mamey',
+        proteina: 'pollo',
+        sobrante: true,
         notas: 'Con lo que sobró de la comida.',
       },
     },
     Martes: {
       desayuno: 'Pan tostado con queso panela La Huaxtequita y mermelada — para Franci: pan remojado en leche Lala Orgánica',
       comida: {
-        nombre: 'Tacos de chambarete con salsa verde',
-        descripcion: 'Tacos con la carne deshebrada del chambarete del lunes, salsa verde de tomatillo, aguacate y cebolla. Insalada de jitomate y pepino.',
-        proteina: 'res',
-        notas: 'Con lo que sobró del lunes. Para Franci: zanahorias/papas del caldo + arroz + un poco de carne fina deshebrada.',
+        nombre: 'Tacos de pollo sobrante con salsa verde',
+        descripcion: 'Tacos con el pollo deshebrado del lunes, salsa verde de tomatillo, aguacate y cebolla. Insalada de jitomate y pepino.',
+        proteina: 'pollo',
+        sobrante: true,
+        notas: 'Con lo que sobró del lunes. Para Franci: pollo deshebrado + arroz + aguacate.',
       },
       cena: {
         nombre: 'Pasta Rummo al pesto de chícharos y menta',
