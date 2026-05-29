@@ -179,10 +179,12 @@ export const MENUS = {
     Lunes: {
       desayuno: 'Hotcakes de sémola y plátano — para Franci: machacado',
       comida: {
-        nombre: 'Calabacitas con huevo y frijoles de olla',
-        descripcion: 'Calabacitas y jitomate guisados con huevo revuelto. Con arroz, frijoles de olla y tortillas. Abundante — sobra para la cena.',
-        proteina: 'huevo',
-        notas: 'Para Franci: pappa de lentejas congelada + calabacitas en puré. ⚠️ Cocinar SIN SAL.',
+        nombre: 'Sopa de lentejas con zanahoria y jitomate',
+        descripcion: 'Lentejas en caldo con zanahoria, jitomate, cebolla y ajo. Con arroz blanco y calabacitas guisadas. Abundante — sobra para la cena.',
+        proteina: 'legumbres',
+        legumbre: 'lentejas',
+        remojo: false,
+        notas: 'Para Franci: lentejas licuadas con zanahoria (sin sal). ⚠️ Cocinar SIN SAL.',
       },
       cena: {
         nombre: 'Cena ligera: molletes y guacamole',
@@ -209,18 +211,16 @@ export const MENUS = {
     Miércoles: {
       desayuno: 'Hotcakes de sémola y plátano — para Franci: machacado',
       comida: {
-        nombre: 'Albóndigas de lentejas en caldillo de jitomate',
-        descripcion: 'Albóndigas de lentejas en caldillo de jitomate. Con arroz. Abundante — sobra para la cena.',
-        proteina: 'legumbres',
-        legumbre: 'lentejas',
-        remojo: true,
-        notas: 'Para Franci: licuar lentejas y salsa (sin sal). ⚠️ Cocinar SIN SAL.',
+        nombre: 'Albóndigas de res en caldillo de jitomate',
+        descripcion: 'Albóndigas de res en caldillo de jitomate con zanahoria y calabacitas. Con arroz. Abundante — sobra para la cena.',
+        proteina: 'res',
+        notas: 'Para Franci: caldo + zanahoria en puré (sin albóndiga todavía). ⚠️ Cocinar SIN SAL.',
       },
       cena: {
-        nombre: 'Pasta con albóndigas de lentejas y acelga',
-        descripcion: 'Pasta con albóndigas de lentejas sobrantes y acelga salteada. 🍮 Postre: zapote negro',
-        proteina: 'legumbres',
-        notas: 'Con lo que sobró de la comida. Para Franci: licuar.',
+        nombre: 'Pasta con albóndigas de res y acelga',
+        descripcion: 'Pasta con albóndigas de res sobrantes y acelga salteada. 🍮 Postre: zapote negro',
+        proteina: 'res',
+        notas: 'Con lo que sobró de la comida. Para Franci: pasta con caldo y acelga licuada.',
       },
     },
     Jueves: {
