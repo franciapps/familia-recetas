@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Share2, ShoppingCart, Bell, ChevronDown, ChevronUp, MessageCircle, ExternalLink } from 'lucide-react'
+import { Share2, ShoppingCart, Bell, ChevronDown, ChevronUp, MessageCircle, ExternalLink, ClipboardList } from 'lucide-react'
 import { MENUS } from '../data/menus.js'
 import { SHOPPING } from '../data/shopping.js'
 import { CB_WEEKEND } from '../data/cbRecipes.js'
@@ -14,6 +14,7 @@ import {
   getCurrentWeekAndDay,
   getTodayDateString,
   isFriday,
+  isMonday,
   getTomorrowMeal,
 } from '../utils/dateUtils.js'
 
@@ -196,13 +197,32 @@ export default function TodayView() {
           </div>
         )}
 
-        {/* Desayuno */}
-        {desayuno && (
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
-            <p className="text-xs font-semibold text-orange-600 uppercase tracking-wide mb-1">
-              Desayuno
-            </p>
-            <p className="text-sm text-gray-700">{desayuno}</p>
+        {/* Monday tasks banner */}
+        {isMonday() && (
+          <div className="bg-sky-50 border border-sky-300 rounded-xl p-3 flex items-start gap-2">
+            <ClipboardList className="w-4 h-4 text-sky-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-semibold text-sky-700 uppercase tracking-wide mb-1">
+                Tareas del lunes
+              </p>
+              <ul className="text-sm text-sky-900 space-y-0.5">
+                <li>☐ Vaciar refri de arriba</li>
+                <li>☐ Limpiar cocina de arriba</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* Friday refri banner */}
+        {isFriday() && (
+          <div className="bg-teal-50 border border-teal-300 rounded-xl p-3 flex items-start gap-2">
+            <ClipboardList className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-semibold text-teal-700 uppercase tracking-wide mb-1">
+                Llevar al refri de arriba
+              </p>
+              <p className="text-sm text-teal-900">1 leche · 1 yogurt · huevos · 1 aguacate</p>
+            </div>
           </div>
         )}
 

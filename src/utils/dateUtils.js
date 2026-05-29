@@ -36,6 +36,10 @@ export function isFriday() {
   return new Date().getDay() === 5
 }
 
+export function isMonday() {
+  return new Date().getDay() === 1
+}
+
 export function getTodayDateString() {
   const today = new Date()
   return today.toLocaleDateString('es-MX', {

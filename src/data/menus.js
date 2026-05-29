@@ -156,10 +156,12 @@ export const MENUS = {
     Viernes: {
       desayuno: 'Hotcakes de avena y plátano — para Franci: machacado',
       comida: {
-        nombre: 'Ensalada de farro con atún Ortiz y alcaparras',
-        descripcion: 'Ensalada de farro con atún Ortiz, alcaparras, jitomates, pepino y aceite de oliva. Con pan.',
-        proteina: 'pescado',
-        notas: 'Para Franci: farro picado + atún desmigado + jitomate.',
+        nombre: 'Tacos de frijoles refritos con queso oaxaca y guacamole',
+        descripcion: 'Tacos de frijoles refritos con queso oaxaca derretido, guacamole y jitomate. Con arroz.',
+        proteina: 'legumbres',
+        legumbre: 'frijoles',
+        remojo: false,
+        notas: 'Usar frijoles de lata o sobrantes. Para Franci: frijoles + arroz en puré + aguacate.',
       },
       cena: {
         nombre: 'Pasta con pomodori e cannellini (Cucina Botanica)',
@@ -177,14 +179,14 @@ export const MENUS = {
     Lunes: {
       desayuno: 'Hotcakes de sémola y plátano — para Franci: machacado',
       comida: {
-        nombre: 'Tinga de hongos',
-        descripcion: 'Champiñones deshebrados en salsa de jitomate con cebolla, ajo y chipotle. Con arroz, tortillas y guacamole. Abundante — sobra para la cena y el martes.',
-        proteina: null,
-        notas: 'Para Franci: pappa de lentejas congelada + arroz en puré (sin chipotle). ⚠️ Cocinar SIN SAL.',
+        nombre: 'Calabacitas con huevo y frijoles de olla',
+        descripcion: 'Calabacitas y jitomate guisados con huevo revuelto. Con arroz, frijoles de olla y tortillas. Abundante — sobra para la cena.',
+        proteina: 'huevo',
+        notas: 'Para Franci: pappa de lentejas congelada + calabacitas en puré. ⚠️ Cocinar SIN SAL.',
       },
       cena: {
-        nombre: 'Cena ligera: tinga sobrante y molletes',
-        descripcion: 'Francesca: tinga de hongos + arroz sobrantes. David: molletes (pan + frijoles refritos + queso oaxaca al grill). 🍮 Postre: mango',
+        nombre: 'Cena ligera: molletes y guacamole',
+        descripcion: 'David: molletes (pan + frijoles refritos + queso oaxaca al grill). Adri: arroz + frijoles sobrantes. 🍮 Postre: mango',
         proteina: null,
         notas: 'Con lo que sobró de la comida.',
       },
@@ -193,15 +195,15 @@ export const MENUS = {
       desayuno: 'Avena cremosa con fruta — para Franci: avena con pera',
       comida: {
         nombre: 'Tortitas de brócoli en salsa verde',
-        descripcion: 'Tortitas de brócoli y huevo en salsa verde de tomatillo. Con arroz, frijoles sobrantes e insalada.',
+        descripcion: 'Tortitas de brócoli y huevo en salsa verde de tomatillo. Con arroz, frijoles refritos e insalada.',
         proteina: 'huevo',
-        notas: 'Con lo que sobró del lunes. Para Franci: brócoli y huevo en puré.',
+        notas: 'Para Franci: brócoli y huevo en puré.',
       },
       cena: {
-        nombre: 'Tacos de arrachera con cebolla caramelizada y calabacitas',
-        descripcion: 'Arrachera marinada a la parrilla con cebolla caramelizada y calabacitas asadas. Guacamole, frijoles, tortillas y salsa. Abundante — sobra para el viernes.',
-        proteina: 'res',
-        notas: 'Para Franci: arroz + calabacitas en puré + frijoles (sin arrachera para 7m).',
+        nombre: 'Seabass al horno con limón y espinacas',
+        descripcion: 'Seabass (robalo) al horno con limón, aceite de oliva y hierbas. Con espinacas salteadas y arroz blanco.',
+        proteina: 'pescado',
+        notas: 'Para Franci: seabass desmigado sin espinas + arroz + espinacas en puré.',
       },
     },
     Miércoles: {
@@ -224,10 +226,10 @@ export const MENUS = {
     Jueves: {
       desayuno: 'Avena con yogurt y fruta — para Franci: avena con manzana',
       comida: {
-        nombre: 'Huevos a la mexicana con frijoles refritos',
-        descripcion: 'Huevos a la mexicana (revueltos con jitomate y cebolla). Frijoles refritos y tortilla.',
-        proteina: 'huevo',
-        notas: 'Para Franci: pappa de lentejas congelada + calabacitas.',
+        nombre: 'Sopa de fideo con verduras',
+        descripcion: 'Sopa de fideo seco guisado con caldillo de jitomate, zanahoria, calabacitas y cebolla. Servir con limón y aguacate.',
+        proteina: null,
+        notas: 'Para Franci: sopa bien cocida licuada (sin limón).',
       },
       cena: {
         nombre: 'Torta salada de acelga y queso panela La Huaxtequita',
@@ -239,11 +241,10 @@ export const MENUS = {
     Viernes: {
       desayuno: 'Hotcakes de sémola y plátano — para Franci: machacado',
       comida: {
-        nombre: 'Ensalada de farro con arrachera sobrante',
-        descripcion: 'Ensalada de farro con arrachera deshebrada sobrante del martes, jitomates, pepino, queso oaxaca y aceite de oliva. Con pan.',
-        proteina: 'res',
-        sobrante: true,
-        notas: 'Con lo que sobró del martes. Para Franci: farro picado + verduras en puré (sin arrachera, sin queso).',
+        nombre: 'Tacos de papa con queso panela y salsa verde',
+        descripcion: 'Tacos de papa cocida desmenuzada con queso panela La Huaxtequita y salsa verde de tomatillo. Con arroz y frijoles.',
+        proteina: null,
+        notas: 'Para Franci: papa y frijoles en puré + arroz.',
       },
       cena: {
         nombre: 'Pasta ai broccoli con alici (Cucina Botanica)',
