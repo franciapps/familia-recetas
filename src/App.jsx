@@ -9,8 +9,8 @@ import DesayunoView from './components/DesayunoView.jsx'
 const TABS = [
   { id: 'hoy', label: 'Hoy', Icon: Home },
   { id: 'semana', label: 'Semana', Icon: Calendar },
-  { id: 'desayuno', label: 'Desayuno', Icon: Coffee },
   { id: 'super', label: 'Súper', Icon: ShoppingCart },
+  { id: 'desayuno', label: 'Desayuno', Icon: Coffee },
   { id: 'ajustes', label: 'Ajustes', Icon: SettingsIcon },
 ]
 
