@@ -75,6 +75,17 @@ export default function DesayunoView() {
           </div>
         ))}
       </div>
+
+      <div className="px-4 mt-6 mb-2">
+        <a
+          href="https://citizenallday.com/chelsea-menu"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-100 border border-amber-200 text-amber-800 text-sm font-medium"
+        >
+          🌟 Ver menú completo de Citizen Chelsea
+        </a>
+      </div>
     </div>
   )
 }
