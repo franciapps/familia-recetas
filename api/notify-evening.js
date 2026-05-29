@@ -45,8 +45,9 @@ export default async function handler(req, res) {
     return res.status(200).json({ mensaje: 'No aplica hoy' })
   }
 
-  const { data: wc } = await supabase.from('week_config').select('*').single()
-  if (!wc?.start_date) return res.status(200).json({ mensaje: 'Semana no configurada' })
+  const { data: wc, error: wcErr } = await supabase.from('week_config').select('*').single()
+  if (wcErr) console.error('[evening] week_config:', wcErr.message)
+  if (!wc?.start_date) return res.status(200).json({ mensaje: 'Semana no configurada', error: wcErr?.message })
 
   const week = calcWeek(wc)
 
@@ -78,8 +79,9 @@ export default async function handler(req, res) {
   const mealName = tomorrowMenu?.comida === meal ? tomorrowMenu.comida.nombre : tomorrowMenu.cena.nombre
   const body = `Mañana toca: ${mealName}\nPon ${legumbreName} en remojo esta noche 💧`
 
-  const { data: subs } = await supabase.from('push_subscriptions').select('*')
-  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones' })
+  const { data: subs, error: subsErr } = await supabase.from('push_subscriptions').select('*')
+  if (subsErr) console.error('[evening] push_subscriptions:', subsErr.message)
+  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones', error: subsErr?.message })
 
   const payload = JSON.stringify({ title: '¡Para mañana! 🌙', body })
 

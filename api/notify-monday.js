@@ -24,8 +24,9 @@ export default async function handler(req, res) {
     return res.status(200).json({ mensaje: 'No es lunes' })
   }
 
-  const { data: subs } = await supabase.from('push_subscriptions').select('*')
-  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones' })
+  const { data: subs, error: subsErr } = await supabase.from('push_subscriptions').select('*')
+  if (subsErr) console.error('[monday] push_subscriptions:', subsErr.message)
+  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones', error: subsErr?.message })
 
   const payload = JSON.stringify({
     title: '🛒 Recordatorio de compras — lunes',

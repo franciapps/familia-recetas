@@ -47,8 +47,9 @@ export default async function handler(req, res) {
     return res.status(200).json({ mensaje: 'Fin de semana' })
   }
 
-  const { data: wc } = await supabase.from('week_config').select('*').single()
-  if (!wc?.start_date) return res.status(200).json({ mensaje: 'Semana no configurada' })
+  const { data: wc, error: wcErr } = await supabase.from('week_config').select('*').single()
+  if (wcErr) console.error('[morning] week_config:', wcErr.message)
+  if (!wc?.start_date) return res.status(200).json({ mensaje: 'Semana no configurada', error: wcErr?.message })
 
   const week = calcWeek(wc)
   const dayName = DAY_NAMES[dayIndex]
@@ -68,8 +69,9 @@ export default async function handler(req, res) {
   if (alert) body += `\n${alert}`
   if (comida.proteina === 'legumbres') body += '\n🫘 Usar olla express'
 
-  const { data: subs } = await supabase.from('push_subscriptions').select('*')
-  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones' })
+  const { data: subs, error: subsErr } = await supabase.from('push_subscriptions').select('*')
+  if (subsErr) console.error('[morning] push_subscriptions:', subsErr.message)
+  if (!subs?.length) return res.status(200).json({ mensaje: 'Sin suscripciones', error: subsErr?.message })
 
   const payload = JSON.stringify({ title: '¡Buenos días! 🌅', body })
 
