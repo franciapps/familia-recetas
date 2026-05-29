@@ -24,9 +24,9 @@ const IDEAS_FINDE = [
     fuente: 'Citizen — Chelsea',
   },
   {
-    nombre: 'French Toast con frutos rojos',
-    emoji: '🍞',
-    descripcion: 'Pan brioche empapado en mezcla de huevo y vainilla, dorado en mantequilla. Con frutos rojos, miel de maple y azúcar glass.',
+    nombre: 'Yogurt con granola y chocolatín',
+    emoji: '🍫',
+    descripcion: 'Yogurt natural con granola crujiente, chocolatín y un chorrito de miel.',
     fuente: 'Citizen — Chelsea',
   },
   {
