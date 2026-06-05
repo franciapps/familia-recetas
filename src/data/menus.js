@@ -57,10 +57,10 @@ export const MENUS = {
     Jueves: {
       desayuno: 'Avena cremosa con yogurt y fruta — para Franci: avena con manzana',
       comida: {
-        nombre: 'Salmón noruego al horno con espinacas y limón',
-        descripcion: 'Salmón noruego al horno con limón, aceite de oliva y eneldo. Con espinacas salteadas y arroz blanco. 🍮 Postre: mango',
-        proteina: 'pescado',
-        notas: 'Para Franci: salmón sin sal, bien cocido, desmigado. Eliminar espinas.',
+        nombre: 'Fideo seco con caldillo de jitomate',
+        descripcion: 'Fideos tostados guisados en caldillo de jitomate con cebolla, ajo y zanahoria. Servir con crema, aguacate y limón.',
+        proteina: null,
+        notas: 'Para Franci: fideo bien cocido licuado (sin crema ni limón).',
       },
       cena: {
         nombre: 'Cena ligera: fruta, yogurt y pan tostado',
@@ -138,10 +138,10 @@ export const MENUS = {
     Jueves: {
       desayuno: 'Yogurt con granola y fruta — para Franci: yogurt con pera en puré',
       comida: {
-        nombre: 'Seabass al horno con espinacas y limón',
-        descripcion: 'Seabass (robalo) al horno con espinacas salteadas, limón y aceite de oliva. Con arroz blanco. 🍮 Postre: mango',
-        proteina: 'pescado',
-        notas: 'Para Franci: seabass desmigado sin espinas + arroz + espinacas en puré.',
+        nombre: 'Sopa de verduras con arroz',
+        descripcion: 'Caldo de verduras con zanahoria, calabacitas, papa, chayote y cebolla. Con arroz y tortillas. 🍮 Postre: mango',
+        proteina: null,
+        notas: 'Para Franci: verduras en puré con caldo (sin sal).',
       },
       cena: {
         nombre: 'Cena ligera: fruta, yogurt y granola',
@@ -220,10 +220,10 @@ export const MENUS = {
     Jueves: {
       desayuno: 'Avena con yogurt y fruta — para Franci: avena con manzana',
       comida: {
-        nombre: 'Seabass al horno con limón y espinacas',
-        descripcion: 'Seabass (robalo) al horno con limón, aceite de oliva y hierbas. Con espinacas salteadas y arroz blanco.',
-        proteina: 'pescado',
-        notas: 'Para Franci: seabass desmigado sin espinas + arroz + espinacas en puré.',
+        nombre: 'Sopa de fideo con verduras',
+        descripcion: 'Sopa de fideo seco guisado con caldillo de jitomate, zanahoria, calabacitas y cebolla. Servir con limón y aguacate.',
+        proteina: null,
+        notas: 'Para Franci: sopa bien cocida licuada (sin limón).',
       },
       cena: {
         nombre: 'Cena ligera: aguacate, jitomate y queso panela con tortillas',
