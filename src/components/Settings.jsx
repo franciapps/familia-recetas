@@ -3,7 +3,6 @@ import { Bell, BellOff, CheckCircle } from 'lucide-react'
 import { setWeekConfig, getCurrentWeekAndDay } from '../utils/dateUtils.js'
 import {
   requestNotificationPermission,
-  subscribeToPush,
   sendTestPush,
   getNotificationStatus,
 } from '../utils/pushUtils.js'
@@ -39,7 +38,9 @@ export default function Settings() {
   const handleEnableNotifications = async () => {
     const granted = await requestNotificationPermission()
     if (granted) {
-      await subscribeToPush()
+      // Se suscribe y manda una notificación de prueba; si algo falla se ve el motivo
+      setTestResult({ cargando: true })
+      setTestResult(await sendTestPush())
     }
     const status = await getNotificationStatus()
     setNotifStatus(status)
