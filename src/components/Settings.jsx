@@ -4,6 +4,7 @@ import { setWeekConfig, getCurrentWeekAndDay } from '../utils/dateUtils.js'
 import {
   requestNotificationPermission,
   subscribeToPush,
+  sendTestPush,
   getNotificationStatus,
 } from '../utils/pushUtils.js'
 
@@ -12,16 +13,14 @@ export default function Settings() {
   const [selectedWeek, setSelectedWeek] = useState(currentWeek || 1)
   const [saved, setSaved] = useState(false)
   const [notifStatus, setNotifStatus] = useState('cargando')
+  const [testResult, setTestResult] = useState(null)
 
   useEffect(() => {
     getNotificationStatus().then(setNotifStatus)
   }, [])
 
   const handleSaveWeek = async () => {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    const startDate = today.toISOString()
-    setWeekConfig(selectedWeek)
+    const startDate = setWeekConfig(selectedWeek)
     // Also save to Supabase for server-side notifications
     try {
       await fetch('/api/set-week', {
@@ -44,6 +43,16 @@ export default function Settings() {
     }
     const status = await getNotificationStatus()
     setNotifStatus(status)
+  }
+
+  const handleTest = async () => {
+    setTestResult({ cargando: true })
+    try {
+      setTestResult(await sendTestPush())
+    } catch (e) {
+      setTestResult({ ok: false, error: e.message })
+    }
+    setNotifStatus(await getNotificationStatus())
   }
 
   const statusLabels = {
@@ -125,7 +134,7 @@ export default function Settings() {
               Notificaciones
             </h2>
             <p className="text-xs text-gray-400 mt-0.5">
-              Recibe avisos de descongelar y de remojar legumbres.
+              La noche anterior: descongelar y remojar. En la mañana: qué dejar listo para la cena.
             </p>
           </div>
           <div className="p-4 space-y-3">
@@ -147,6 +156,29 @@ export default function Settings() {
               </button>
             )}
 
+            {notifStatus === 'activo' && (
+              <button
+                onClick={handleTest}
+                className="w-full flex items-center justify-center gap-2 border-2 border-blue-600 text-blue-700 text-sm font-semibold py-2 rounded-xl"
+              >
+                <Bell className="w-4 h-4" />
+                Probar notificación
+              </button>
+            )}
+
+            {testResult && !testResult.cargando && (
+              <p className={`text-xs ${testResult.ok ? 'text-green-700' : 'text-red-700'}`}>
+                {testResult.ok ? 'Enviada: debería llegarte en unos segundos.' : `No funcionó: ${testResult.error}`}
+              </p>
+            )}
+
+            {notifStatus === 'no-soportado' && (
+              <p className="text-xs text-gray-500">
+                En iPhone las notificaciones solo funcionan si la app está en la pantalla de inicio:
+                en Safari toca Compartir → "Agregar a inicio" y ábrela desde ahí.
+              </p>
+            )}
+
             {notifStatus === 'denied' && (
               <p className="text-xs text-gray-500">
                 Las notificaciones están bloqueadas en tu navegador. Ve a Configuración del sitio para habilitarlas.
@@ -162,12 +194,12 @@ export default function Settings() {
           </div>
           <div className="p-4 space-y-2">
             {[
-              { nombre: 'Francesca', rol: 'Mamá' },
-              { nombre: 'David', rol: 'Papá' },
-              { nombre: 'Franci', rol: 'Bebé (7m)' },
-              { nombre: 'Adri', rol: 'Niño (2.5a)' },
-              { nombre: 'Sandy', rol: 'Empleada (L–V)' },
-              { nombre: 'Yola', rol: 'Empleada (L, Mi, J)' },
+              { nombre: 'Francesca', rol: 'Mamá · comida y cena' },
+              { nombre: 'David', rol: 'Papá · cena' },
+              { nombre: 'Franci', rol: 'Bebé (1 año) · comida y cena' },
+              { nombre: 'Adri', rol: 'Niño (3 años) · come en la escuela, cena en casa' },
+              { nombre: 'Yola', rol: 'Empleada (L–V) · comida' },
+              { nombre: 'Mari', rol: 'Empleada (L–V) · comida' },
             ].map(({ nombre, rol }) => (
               <div key={nombre} className="flex justify-between items-center text-sm">
                 <span className="font-medium text-gray-900">{nombre}</span>

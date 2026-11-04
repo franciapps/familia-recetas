@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import { Home, Calendar, ShoppingCart, Settings as SettingsIcon, Coffee } from 'lucide-react'
+import { Home, Calendar, ShoppingCart, Settings as SettingsIcon, School } from 'lucide-react'
 import TodayView from './components/TodayView.jsx'
 import WeekView from './components/WeekView.jsx'
 import ShoppingList from './components/ShoppingList.jsx'
 import Settings from './components/Settings.jsx'
-import DesayunoView from './components/DesayunoView.jsx'
+import EscuelaView from './components/EscuelaView.jsx'
 
 const TABS = [
   { id: 'hoy', label: 'Hoy', Icon: Home },
   { id: 'semana', label: 'Semana', Icon: Calendar },
+  { id: 'escuela', label: 'Escuela', Icon: School },
   { id: 'super', label: 'Súper', Icon: ShoppingCart },
-  { id: 'desayuno', label: 'Desayuno', Icon: Coffee },
   { id: 'ajustes', label: 'Ajustes', Icon: SettingsIcon },
 ]
 
@@ -23,8 +23,8 @@ function App() {
         return <TodayView />
       case 'semana':
         return <WeekView />
-      case 'desayuno':
-        return <DesayunoView />
+      case 'escuela':
+        return <EscuelaView />
       case 'super':
         return <ShoppingList />
       case 'ajustes':

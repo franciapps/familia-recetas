@@ -10,19 +10,17 @@ export async function subscribeToPush() {
   if (!('serviceWorker' in navigator) || !VAPID_PUBLIC_KEY) return null
   try {
     const reg = await navigator.serviceWorker.ready
-    // Verificar si ya existe una suscripción
-    const existing = await reg.pushManager.getSubscription()
-    if (existing) return existing
-
-    const sub = await reg.pushManager.subscribe({
+    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
     })
-    await fetch('/api/subscribe', {
+    // Mandarla siempre al servidor: si el servidor la había perdido, así se recupera
+    const res = await fetch('/api/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sub),
     })
+    if (!res.ok) throw new Error(`El servidor no guardó la suscripción (${res.status})`)
     return sub
   } catch (err) {
     console.error('Error al suscribirse a notificaciones:', err)
@@ -30,8 +28,22 @@ export async function subscribeToPush() {
   }
 }
 
+// Manda una notificación de prueba a este teléfono. Devuelve { ok, error }
+export async function sendTestPush() {
+  const sub = await subscribeToPush()
+  if (!sub) return { ok: false, error: 'No hay suscripción en este teléfono' }
+  const res = await fetch('/api/test-push', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(sub),
+  })
+  if (res.ok) return { ok: true }
+  const data = await res.json().catch(() => ({}))
+  return { ok: false, error: data.detalle || data.error || `Error ${res.status}` }
+}
+
 export async function getNotificationStatus() {
-  if (!('Notification' in window)) return 'no-soportado'
+  if (!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)) return 'no-soportado'
   if (Notification.permission === 'granted') {
     const reg = await navigator.serviceWorker.ready
     const sub = await reg.pushManager.getSubscription()

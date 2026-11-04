@@ -1,15 +1,16 @@
-// Lista de compras semanales — reescrita con staples fijos, verduras en piezas,
-// fruta rotativa, carne/pescado por semana, legumbres por semana,
+// Lista de compras semanales — staples fijos, verduras en piezas, fruta rotativa,
+// carne/pescado y legumbres según el menú de cada semana (menus.js),
 // despensa cada 3 semanas (S1) y despensa mensual (S1).
 
 export const SHOPPING = {
   1: [
     // Carne / Pescado
-    { categoria: 'Carne / Pescado', articulo: 'Chambarete (stinco de res con hueso)', cantidad: '800 g', precio: 100 },
-    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 400 },
-    { categoria: 'Carne / Pescado', articulo: 'Salmon noruego', cantidad: '400 g', precio: 240 },
+    { categoria: 'Carne / Pescado', articulo: 'Pechuga de pollo', cantidad: '1.5 kg', precio: 210 },
+    { categoria: 'Carne / Pescado', articulo: 'Pollo en piezas (para salsa verde)', cantidad: '1.5 kg', precio: 150 },
+    { categoria: 'Carne / Pescado', articulo: 'Carne molida de res (picadillo)', cantidad: '700 g', precio: 140 },
+    { categoria: 'Carne / Pescado', articulo: 'Salmón en filetes', cantidad: '500 g', precio: 300 },
     // Huevos / Lácteos
-    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 190 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '3 cajas (3 docenas) — pancakes diarios', precio: 285 },
     { categoria: 'Huevos / Lácteos', articulo: 'Yogurt Flor de Alfalfa', cantidad: '1 kg', precio: 70 },
     { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 161 },
     { categoria: 'Huevos / Lácteos', articulo: 'Queso panela La Huaxtequita', cantidad: '1/2 kg', precio: 60 },
@@ -18,8 +19,8 @@ export const SHOPPING = {
     { categoria: 'Cereales', articulo: 'Arroz blanco', cantidad: '2 kg', precio: 50 },
     { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 120 },
     // Legumbres
-    { categoria: 'Legumbres', articulo: 'Frijoles negros secos', cantidad: '1 kg', precio: 40 },
-    { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '500 g', precio: 25 },
+    { categoria: 'Legumbres', articulo: 'Frijoles negros secos', cantidad: '1.5 kg', precio: 60 },
+    { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '1 kg', precio: 45 },
     // Verduras
     { categoria: 'Verduras', articulo: 'Zanahorias', cantidad: '10 piezas', precio: 30 },
     { categoria: 'Verduras', articulo: 'Calabacitas', cantidad: '10 piezas', precio: 45 },
@@ -37,7 +38,7 @@ export const SHOPPING = {
     { categoria: 'Verduras', articulo: 'Espinacas', cantidad: '10 manojos', precio: 60 },
     { categoria: 'Verduras', articulo: 'Hierbas (cilantro, perejil, romero, epazote, albahaca)', cantidad: 'manojos surtidos', precio: 40 },
     // Fruta — staples
-    { categoria: 'Fruta', articulo: 'Plátanos', cantidad: '12 piezas', precio: 30 },
+    { categoria: 'Fruta', articulo: 'Plátanos (pancakes y fruta)', cantidad: '18 piezas', precio: 45 },
     { categoria: 'Fruta', articulo: 'Manzanas', cantidad: '12 piezas', precio: 55 },
     { categoria: 'Fruta', articulo: 'Tunas', cantidad: '10 piezas', precio: 30 },
     { categoria: 'Fruta', articulo: 'Mandarinas', cantidad: '6 piezas', precio: 25 },
@@ -47,6 +48,12 @@ export const SHOPPING = {
     { categoria: 'Fruta', articulo: 'Zapote negro', cantidad: '2 piezas', precio: 40 },
     // Tortillas
     { categoria: 'Tortillas y Pan', articulo: 'Tortillas de maíz frescas', cantidad: '1 kg', precio: 25 },
+    { categoria: 'Verduras', articulo: 'Pepino', cantidad: '3 piezas', precio: 15 },
+    { categoria: 'Verduras', articulo: 'Apio', cantidad: '1 manojo', precio: 20 },
+    { categoria: 'Verduras', articulo: 'Pimiento rojo', cantidad: '2 piezas', precio: 30 },
+    { categoria: 'Verduras', articulo: 'Nopales', cantidad: '10 piezas', precio: 25 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Queso fresco', cantidad: '1/2 kg', precio: 60 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Harina de almendra (pancakes)', cantidad: '500 g', precio: 180 },
     // Despensa cada 3 semanas (solo S1)
     { categoria: 'Despensa (cada 3 sem)', articulo: 'Mantequilla Lurpak', cantidad: '250 g', precio: 80 },
     { categoria: 'Despensa (cada 3 sem)', articulo: 'Granola Dasavena Chocolate', cantidad: '500 g', precio: 120 },
@@ -63,9 +70,12 @@ export const SHOPPING = {
 
   2: [
     // Carne / Pescado
-    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 400 },
+    { categoria: 'Carne / Pescado', articulo: 'Pollo entero (al horno, sobra para tacos)', cantidad: '1 pieza (2 kg)', precio: 200 },
+    { categoria: 'Carne / Pescado', articulo: 'Pollo en piezas (para caldo)', cantidad: '1.5 kg', precio: 150 },
+    { categoria: 'Carne / Pescado', articulo: 'Carne molida de res (albóndigas)', cantidad: '700 g', precio: 140 },
+    { categoria: 'Carne / Pescado', articulo: 'Salmón en filetes', cantidad: '500 g', precio: 300 },
     // Huevos / Lácteos
-    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 190 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '3 cajas (3 docenas) — pancakes diarios', precio: 285 },
     { categoria: 'Huevos / Lácteos', articulo: 'Yogurt Flor de Alfalfa', cantidad: '1 kg', precio: 70 },
     { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 161 },
     { categoria: 'Huevos / Lácteos', articulo: 'Queso panela La Huaxtequita', cantidad: '1/2 kg', precio: 60 },
@@ -74,9 +84,9 @@ export const SHOPPING = {
     { categoria: 'Cereales', articulo: 'Arroz blanco', cantidad: '2 kg', precio: 50 },
     { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 120 },
     // Legumbres
-    { categoria: 'Legumbres', articulo: 'Garbanzos secos', cantidad: '500 g', precio: 30 },
     { categoria: 'Legumbres', articulo: 'Frijoles negros secos', cantidad: '1 kg', precio: 40 },
-    { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '500 g', precio: 25 },
+    { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '1 kg', precio: 45 },
+    { categoria: 'Legumbres', articulo: 'Alubias (cannellini) de lata', cantidad: '2 latas', precio: 70 },
     // Verduras
     { categoria: 'Verduras', articulo: 'Zanahorias', cantidad: '10 piezas', precio: 30 },
     { categoria: 'Verduras', articulo: 'Calabacitas', cantidad: '10 piezas', precio: 45 },
@@ -95,7 +105,7 @@ export const SHOPPING = {
     { categoria: 'Verduras', articulo: 'Menta fresca', cantidad: '1 manojo', precio: 10 },
     { categoria: 'Verduras', articulo: 'Hierbas (cilantro, perejil, romero, epazote, albahaca)', cantidad: 'manojos surtidos', precio: 40 },
     // Fruta — staples
-    { categoria: 'Fruta', articulo: 'Plátanos', cantidad: '12 piezas', precio: 30 },
+    { categoria: 'Fruta', articulo: 'Plátanos (pancakes y fruta)', cantidad: '18 piezas', precio: 45 },
     { categoria: 'Fruta', articulo: 'Manzanas', cantidad: '12 piezas', precio: 55 },
     { categoria: 'Fruta', articulo: 'Tunas', cantidad: '10 piezas', precio: 30 },
     { categoria: 'Fruta', articulo: 'Mandarinas', cantidad: '6 piezas', precio: 25 },
@@ -105,14 +115,23 @@ export const SHOPPING = {
     { categoria: 'Fruta', articulo: 'Mamey', cantidad: '1 pieza', precio: 60 },
     // Tortillas
     { categoria: 'Tortillas y Pan', articulo: 'Tortillas de maíz frescas', cantidad: '1 kg', precio: 25 },
+    { categoria: 'Verduras', articulo: 'Apio', cantidad: '1 manojo', precio: 20 },
+    { categoria: 'Verduras', articulo: 'Nopales', cantidad: '10 piezas', precio: 25 },
+    { categoria: 'Verduras', articulo: 'Camote', cantidad: '3 piezas', precio: 30 },
+    { categoria: 'Verduras', articulo: 'Chayote', cantidad: '2 piezas', precio: 15 },
+    { categoria: 'Verduras', articulo: 'Plátano macho', cantidad: '3 piezas', precio: 30 },
+    { categoria: 'Tortillas y Pan', articulo: 'Pan de caja integral (para la sopa)', cantidad: '1 paquete', precio: 60 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Harina de almendra (pancakes)', cantidad: '500 g', precio: 180 },
   ],
 
   3: [
     // Carne / Pescado
-    { categoria: 'Carne / Pescado', articulo: 'Arrachera (falda de res)', cantidad: '800 g', precio: 240 },
-    { categoria: 'Carne / Pescado', articulo: 'Seabass (robalo)', cantidad: '1 kg', precio: 400 },
+    { categoria: 'Carne / Pescado', articulo: 'Pechuga de pollo molida (albóndigas)', cantidad: '600 g', precio: 120 },
+    { categoria: 'Carne / Pescado', articulo: 'Pollo en piezas (a la jardinera)', cantidad: '1.5 kg', precio: 150 },
+    { categoria: 'Carne / Pescado', articulo: 'Chambarete de res con hueso', cantidad: '800 g', precio: 100 },
+    { categoria: 'Carne / Pescado', articulo: 'Salmón en filetes', cantidad: '500 g', precio: 300 },
     // Huevos / Lácteos
-    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '2 cajas (2 docenas)', precio: 190 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '3 cajas (3 docenas) — pancakes diarios', precio: 285 },
     { categoria: 'Huevos / Lácteos', articulo: 'Yogurt Flor de Alfalfa', cantidad: '1 kg', precio: 70 },
     { categoria: 'Huevos / Lácteos', articulo: 'Leche Lala Orgánica Blanca', cantidad: '3 L', precio: 161 },
     { categoria: 'Huevos / Lácteos', articulo: 'Queso panela La Huaxtequita', cantidad: '1/2 kg', precio: 60 },
@@ -121,8 +140,9 @@ export const SHOPPING = {
     { categoria: 'Cereales', articulo: 'Arroz blanco', cantidad: '2 kg', precio: 50 },
     { categoria: 'Cereales', articulo: 'Granola Dasavena Chocolate', cantidad: '1 bolsa 500g', precio: 120 },
     // Legumbres
-    { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '1 kg', precio: 45 },
     { categoria: 'Legumbres', articulo: 'Frijoles negros secos', cantidad: '1 kg', precio: 40 },
+    { categoria: 'Legumbres', articulo: 'Lentejas', cantidad: '1 kg', precio: 45 },
+    { categoria: 'Legumbres', articulo: 'Garbanzos secos', cantidad: '500 g', precio: 30 },
     // Verduras
     { categoria: 'Verduras', articulo: 'Zanahorias', cantidad: '10 piezas', precio: 30 },
     { categoria: 'Verduras', articulo: 'Calabacitas', cantidad: '10 piezas', precio: 45 },
@@ -141,7 +161,7 @@ export const SHOPPING = {
     { categoria: 'Verduras', articulo: 'Menta fresca', cantidad: '1 manojo', precio: 10 },
     { categoria: 'Verduras', articulo: 'Hierbas (cilantro, perejil, romero, epazote, albahaca)', cantidad: 'manojos surtidos', precio: 40 },
     // Fruta — staples
-    { categoria: 'Fruta', articulo: 'Plátanos', cantidad: '12 piezas', precio: 30 },
+    { categoria: 'Fruta', articulo: 'Plátanos (pancakes y fruta)', cantidad: '18 piezas', precio: 45 },
     { categoria: 'Fruta', articulo: 'Manzanas', cantidad: '12 piezas', precio: 55 },
     { categoria: 'Fruta', articulo: 'Tunas', cantidad: '10 piezas', precio: 30 },
     { categoria: 'Fruta', articulo: 'Mandarinas', cantidad: '6 piezas', precio: 25 },
@@ -152,6 +172,10 @@ export const SHOPPING = {
     { categoria: 'Fruta', articulo: 'Mango', cantidad: '3 piezas', precio: 45 },
     // Tortillas
     { categoria: 'Tortillas y Pan', articulo: 'Tortillas de maíz frescas', cantidad: '1.5 kg', precio: 40 },
+    { categoria: 'Verduras', articulo: 'Elote', cantidad: '4 piezas', precio: 30 },
+    { categoria: 'Tortillas y Pan', articulo: 'Bolillos (molletes)', cantidad: '6 piezas', precio: 30 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Queso parmesano', cantidad: '200 g', precio: 120 },
+    { categoria: 'Huevos / Lácteos', articulo: 'Harina de almendra (pancakes)', cantidad: '500 g', precio: 180 },
   ],
 }
 

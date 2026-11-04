@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/notify-morning",
-      "schedule": "0 12 * * 1-5"
+      "schedule": "30 13 * * 1-5"
     },
     {
       "path": "/api/notify-evening",
-      "schedule": "0 23 * * 0-4"
+      "schedule": "0 2 * * 1-5"
     },
     {
       "path": "/api/notify-friday",
@@ -14,7 +14,7 @@
     },
     {
       "path": "/api/notify-monday",
-      "schedule": "0 13 * * 1"
+      "schedule": "0 14 * * 1"
     }
   ]
 }

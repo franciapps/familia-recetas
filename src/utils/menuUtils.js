@@ -1,35 +1,82 @@
-// Detecta el tipo de proteína y devuelve el aviso de descongelar
-// Si sobrante=true, no se necesita descongelar (son sobras de ayer)
-export function getProteinAlert(proteina, sobrante = false) {
-  if (sobrante) return null
-  if (proteina === 'pollo') return '🐔 Saca el pollo del congelador'
-  if (proteina === 'pescado') return '🐟 Saca el pescado del congelador'
-  if (proteina === 'res') return '🥩 Saca la carne de res del congelador'
-  if (proteina === 'cerdo') return '🥩 Saca la carne de cerdo del congelador'
-  return null
+// Lógica del menú compartida entre la app y las notificaciones (sin APIs del navegador).
+import { MENUS } from '../data/menus.js'
+import { DAY_NAMES } from './weekCalc.js'
+
+const FREEZER_NAMES = {
+  pollo: 'el pollo',
+  pescado: 'el salmón',
+  res: 'la carne de res',
 }
 
-// Verifica si la comida de mañana requiere remojar legumbres esta noche
-export function needsLegumesSoaking(meal) {
-  return meal?.proteina === 'legumbres'
+const LEGUMBRE_NAMES = {
+  frijoles: 'los frijoles negros',
+  lentejas: 'las lentejas',
+  garbanzos: 'los garbanzos',
 }
 
-// Devuelve el nombre bonito de la legumbre
-export function getLegumbreName(legumbre) {
-  const names = {
-    lentejas: 'lentejas',
-    frijoles: 'frijoles',
-    garbanzos: 'garbanzos',
+// El menú del día siguiente con menú. El domingo devuelve el lunes de la semana siguiente del ciclo.
+// Viernes y sábado devuelven null (el aviso del lunes llega el domingo).
+export function getTomorrow(week, dayIndex) {
+  if (!week || dayIndex === 5 || dayIndex === 6) return null
+  const tomorrowIndex = dayIndex + 1
+  const tomorrowWeek = dayIndex === 0 ? (week % 3) + 1 : week
+  const dayName = DAY_NAMES[tomorrowIndex]
+  const menu = MENUS[tomorrowWeek]?.[dayName]
+  return menu ? { week: tomorrowWeek, dayName, menu } : null
+}
+
+// Lo que hay que hacer la noche anterior: descongelar proteínas y poner legumbres en remojo
+export function nightBeforeTasks(menuDay) {
+  const descongelar = []
+  const remojo = []
+  for (const momento of ['comida', 'cena']) {
+    const meal = menuDay?.[momento]
+    if (!meal) continue
+    if (FREEZER_NAMES[meal.proteina] && !meal.sobrante) {
+      descongelar.push({ texto: `Saca ${FREEZER_NAMES[meal.proteina]} del congelador`, momento, plato: meal.nombre })
+    }
+    if (meal.remojo) {
+      const nombre = LEGUMBRE_NAMES[meal.legumbre] || 'las legumbres'
+      remojo.push({ texto: `Pon ${nombre} en remojo`, momento, plato: meal.nombre })
+    }
   }
-  return names[legumbre] || legumbre
+  return { descongelar, remojo }
 }
 
-// Construye el mensaje de WhatsApp para compartir
-export function buildShareMessage(meal, lunchPeople, dinnerPeople) {
-  if (!meal) return ''
-  const lunchList = lunchPeople.join(', ')
-  const dinnerList = dinnerPeople.join(', ')
-  return `¡Hola! ¿Me ayuda cocinando esto hoy? 🍳\n*${meal.nombre}*\n${meal.descripcion}\n\n👨‍👩‍👧‍👦 Para la comida: ${lunchList}\n🌙 Y que sobre para la cena: ${dinnerList}`
+export function buildNightMessage(menuDay) {
+  const { descongelar, remojo } = nightBeforeTasks(menuDay)
+  const lines = [...descongelar, ...remojo].map(t => `• ${t.texto} (para la ${t.momento})`)
+  return lines.length ? lines.join('\n') : null
+}
+
+// Mensaje de la mañana: qué se cocina hoy y qué dejar listo para la cena
+export function buildMorningMessage(menuDay) {
+  if (!menuDay) return null
+  const { comida, cena } = menuDay
+  const lines = []
+  if (comida) lines.push(`Comida: ${comida.nombre}`)
+  if (cena) lines.push(`Cena: ${cena.nombre}${cena.receta ? ` (${cena.receta.fuente})` : ''}`)
+  if (cena?.prep?.length) {
+    lines.push('Dejar listo para la cena:')
+    cena.prep.forEach(p => lines.push(`• ${p}`))
+  }
+  return lines.join('\n')
+}
+
+// Mensaje de WhatsApp para Yola y Mari: comida del día + preparación de la cena
+export function buildEmpleadasMessage(menuDay, lunchPeople) {
+  if (!menuDay) return ''
+  const { comida, cena } = menuDay
+  const parts = ['¡Buenos días! 🌞']
+  if (comida) {
+    parts.push(`*Comida de hoy:* ${comida.nombre}\n${comida.descripcion}`)
+    parts.push(`Comen: ${lunchPeople.join(', ')}`)
+  }
+  if (cena?.prep?.length) {
+    parts.push(`*Para la cena, por favor dejar listo (lavado, cortado y tapado en el refri):*\n${cena.prep.map(p => `• ${p}`).join('\n')}`)
+  }
+  parts.push('Cocinar sin sal, cada quien le pone la suya. ¡Gracias! 🙏')
+  return parts.join('\n\n')
 }
 
 // Agrupa los artículos de la lista por categoría

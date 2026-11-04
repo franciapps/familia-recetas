@@ -1,7 +1,6 @@
-import { MENUS } from '../data/menus.js'
+import { MENUS, DIAS } from '../data/menus.js'
 import { getCurrentWeekAndDay } from '../utils/dateUtils.js'
 
-const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
 const DAY_INDEX_MAP = { Lunes: 1, Martes: 2, 'Miércoles': 3, Jueves: 4, Viernes: 5 }
 
 export default function WeekView() {
@@ -68,9 +67,9 @@ export default function WeekView() {
                     <p className="text-sm font-medium text-gray-900">
                       {diaMenu.comida?.nombre || '—'}
                     </p>
-                    {diaMenu.comida?.proteina && (
+                    {diaMenu.comida?.plato && (
                       <p className="text-xs text-gray-400 mt-0.5">
-                        Proteína: {diaMenu.comida.proteina}
+                        🍚 {diaMenu.comida.plato.carbo} · 💪 {diaMenu.comida.plato.proteina} · 🥦 {diaMenu.comida.plato.verdura}
                       </p>
                     )}
                   </div>
@@ -82,9 +81,19 @@ export default function WeekView() {
                     <p className="text-sm font-medium text-gray-900">
                       {diaMenu.cena?.nombre || '—'}
                     </p>
-                    {diaMenu.cena?.proteina && (
+                    {diaMenu.cena?.receta && (
+                      <a
+                        href={diaMenu.cena.receta.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-indigo-600 font-medium hover:underline"
+                      >
+                        {diaMenu.cena.receta.fuente === 'Bimby' ? '🤖 Bimby' : '🌿 Cucina Botanica'} →
+                      </a>
+                    )}
+                    {diaMenu.cena?.plato && (
                       <p className="text-xs text-gray-400 mt-0.5">
-                        Proteína: {diaMenu.cena.proteina}
+                        🍚 {diaMenu.cena.plato.carbo} · 💪 {diaMenu.cena.plato.proteina} · 🥦 {diaMenu.cena.plato.verdura}
                       </p>
                     )}
                   </div>
@@ -104,7 +113,7 @@ export default function WeekView() {
             Finde de semana
           </p>
           <p className="text-sm text-gray-500">
-            Sábado y domingo sin menú fijo — cocina libre.
+            Sábado y domingo sin menú fijo — cocina libre. Desayuno de siempre: pancakes de huevo, harina de almendra y plátano (Franci: huevo y aguacate).
           </p>
         </div>
       </div>
