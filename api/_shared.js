@@ -54,7 +54,9 @@ export async function sendToAll(tag, notification) {
   results.forEach((r, i) => {
     if (r.status === 'fulfilled') return
     const code = r.reason?.statusCode
-    if (code === 404 || code === 410) muertas.push(subs[i].endpoint)
+    // 403 VapidPkHashMismatch: la suscripción se hizo con otra clave VAPID y no podrá recibir nunca
+    const otraClave = code === 403 && /VapidPkHashMismatch/i.test(r.reason?.body || '')
+    if (code === 404 || code === 410 || otraClave) muertas.push(subs[i].endpoint)
     else errores.push({ code, body: r.reason?.body || r.reason?.message })
   })
   if (errores.length) console.error(`[${tag}] errores de envío:`, JSON.stringify(errores))
