@@ -198,6 +198,16 @@ export default function TodayView() {
               <p className="text-sm text-gray-600 mb-3">{comida.descripcion}</p>
               <PlatoBalance plato={comida.plato} />
               <People label="Comen hoy:" people={LUNCH_PEOPLE} color="bg-emerald-100 text-emerald-800" />
+              {comida.paraAdri && (
+                <p className="mb-3 text-sm bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-2">🎒 {comida.paraAdri}</p>
+              )}
+              {comida.receta && (
+                <a href={comida.receta.link} target="_blank" rel="noopener noreferrer"
+                  className="mb-3 flex items-center gap-2 text-emerald-700 text-sm font-medium hover:underline">
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  Receta: {comida.receta.nombre} →
+                </a>
+              )}
               <a href={`https://wa.me/?text=${encodeURIComponent(empleadasMsg)}`} target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg w-full justify-center transition-colors">
                 <Share2 className="w-4 h-4" />
@@ -247,6 +257,7 @@ export default function TodayView() {
               {adri && (
                 <div className={`border rounded-lg p-3 ${ADRI_STYLES[adri.estado]}`}>
                   <p className="text-xs font-semibold uppercase tracking-wide mb-1">🎒 Para Adri</p>
+                  {cena.adri && <p className="text-sm font-medium mb-1">Cena: {cena.adri}</p>}
                   {adri.mensajes.map((m, i) => <p key={i} className="text-sm">{m}</p>)}
                 </div>
               )}

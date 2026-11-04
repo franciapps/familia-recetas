@@ -56,6 +56,7 @@ export function buildMorningMessage(menuDay) {
   const lines = []
   if (comida) lines.push(`Comida: ${comida.nombre}`)
   if (cena) lines.push(`Cena: ${cena.nombre}${cena.receta ? ` (${cena.receta.fuente})` : ''}`)
+  if (comida?.paraAdri) lines.push(`🎒 ${comida.paraAdri}`)
   if (cena?.prep?.length) {
     lines.push('Dejar listo para la cena:')
     cena.prep.forEach(p => lines.push(`• ${p}`))
@@ -71,6 +72,7 @@ export function buildEmpleadasMessage(menuDay, lunchPeople) {
   if (comida) {
     parts.push(`*Comida de hoy:* ${comida.nombre}\n${comida.descripcion}`)
     parts.push(`Comen: ${lunchPeople.join(', ')}`)
+    if (comida.paraAdri) parts.push(`🎒 *Para Adri:* ${comida.paraAdri}`)
   }
   if (cena?.prep?.length) {
     parts.push(`*Para la cena, por favor dejar listo (lavado, cortado y tapado en el refri):*\n${cena.prep.map(p => `• ${p}`).join('\n')}`)

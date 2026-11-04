@@ -89,6 +89,7 @@ const ALTERNATIVA = {
   legumbres: 'un poco de pollo deshebrado o queso panela',
   pescado: 'pollo deshebrado o frijoles',
   res: 'pollo o lentejas',
+  queso: 'pollo deshebrado o frijoles',
 }
 
 // Consejos para la cena de Adri según lo que comió en la escuela
@@ -97,14 +98,16 @@ export function adviceForAdri(escuelaSemana, dia, cena) {
   if (!hoy) return { estado: 'sin-datos', mensajes: ['Aún no hay menú de la escuela para este día (pestaña Escuela).'] }
 
   const mensajes = []
-  const mismaProteina = cena?.proteina && hoy.proteinas.includes(cena.proteina)
+  // Algunas cenas ligeras tienen una proteína distinta para Adri (p. ej. pollo sin salsa del mediodía)
+  const proteinaAdri = cena?.proteinaAdri || cena?.proteina
+  const mismaProteina = proteinaAdri && hoy.proteinas.includes(proteinaAdri)
   if (mismaProteina) {
-    mensajes.push(`Ya comió ${PROTEINAS[cena.proteina].label.toLowerCase()} en la escuela: para él, cambia la proteína por ${ALTERNATIVA[cena.proteina]}.`)
+    mensajes.push(`Ya comió ${PROTEINAS[proteinaAdri].label.toLowerCase()} en la escuela: para él, cambia la proteína por ${ALTERNATIVA[proteinaAdri]}.`)
   }
 
   // La carne roja de la semana la pone la escuela: en casa Adri no cena carne roja
   const resSemana = DIAS.filter(d => dayInfo(escuelaSemana?.[d])?.proteinas.includes('res')).length
-  if (cena?.proteina === 'res' && resSemana > 0) {
+  if (proteinaAdri === 'res' && resSemana > 0) {
     mensajes.push('Esta semana ya comió carne roja en la escuela: hoy para él, pollo o lentejas.')
   }
 
@@ -118,5 +121,5 @@ export function adviceForAdri(escuelaSemana, dia, cena) {
   if (mensajes.length === 0) {
     return { estado: 'ok', mensajes: ['Su comida en la escuela fue completa y distinta a la cena: come la cena normal. ✓'] }
   }
-  return { estado: mismaProteina || (cena?.proteina === 'res' && resSemana > 0) ? 'cambiar' : 'ajustar', mensajes }
+  return { estado: mismaProteina || (proteinaAdri === 'res' && resSemana > 0) ? 'cambiar' : 'ajustar', mensajes }
 }
