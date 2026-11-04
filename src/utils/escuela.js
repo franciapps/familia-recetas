@@ -59,28 +59,51 @@ export function saveEscuela(monday, data) {
   }
 }
 
-// Info de un día: texto + proteínas (las elegidas a mano mandan sobre las detectadas)
-export function dayInfo(entry) {
-  if (!entry?.texto?.trim()) return null
-  const proteinas = entry.proteinas ?? detectProteinas(entry.texto)
-  const verdura = entry.verdura ?? detectVerdura(entry.texto)
-  return { texto: entry.texto, proteinas, verdura }
+// Texto de un día: colación + comida (los datos antiguos solo tenían `texto`)
+export function textoDia(entry) {
+  if (!entry) return ''
+  if (entry.texto !== undefined) return entry.texto
+  return [entry.colacion, entry.comida].filter(Boolean).join('\n')
 }
 
-// Reparte un menú pegado entero ("Lunes: ... Martes: ...") por día
-export function splitByDay(texto) {
-  const result = {}
-  const re = /(lunes|martes|mi[eé]rcoles|jueves|viernes)\s*[:\-–]?/gi
-  const matches = [...texto.matchAll(re)]
-  matches.forEach((m, i) => {
-    const start = m.index + m[0].length
-    const end = i + 1 < matches.length ? matches[i + 1].index : texto.length
-    const raw = m[1].toLowerCase().replace('miercoles', 'miércoles')
-    const dia = DIAS.find(d => d.toLowerCase() === raw)
-    const contenido = texto.slice(start, end).trim()
-    if (dia && contenido) result[dia] = (result[dia] ? result[dia] + '\n' : '') + contenido
+// Info de un día: texto + proteínas (las elegidas a mano mandan sobre las detectadas)
+export function dayInfo(entry) {
+  const texto = textoDia(entry)
+  if (!texto.trim()) return null
+  const proteinas = entry.proteinas ?? detectProteinas(texto)
+  const verdura = entry.verdura ?? detectVerdura(texto)
+  return { texto, proteinas, verdura }
+}
+
+// Reduce la foto antes de mandarla: Vercel acepta como máximo 4.5 MB por petición
+export function resizeImage(file, maxSide = 1600) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      const scale = Math.min(1, maxSide / Math.max(img.width, img.height))
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.round(img.width * scale)
+      canvas.height = Math.round(img.height * scale)
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+      URL.revokeObjectURL(img.src)
+      resolve(canvas.toDataURL('image/jpeg', 0.85).split(',')[1])
+    }
+    img.onerror = () => reject(new Error('No se pudo abrir la imagen'))
+    img.src = URL.createObjectURL(file)
   })
-  return result
+}
+
+// Manda la foto a /api/leer-menu y devuelve { Lunes: { colacion, comida }, ... }
+export async function leerMenuFoto(file) {
+  const data = await resizeImage(file)
+  const res = await fetch('/api/leer-menu', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data, mediaType: 'image/jpeg' }),
+  })
+  const json = await res.json().catch(() => ({}))
+  if (!res.ok) throw new Error(json.error || `Error ${res.status}`)
+  return Object.fromEntries(json.dias.map(({ dia, colacion, comida }) => [dia, { colacion, comida }]))
 }
 
 // Alternativa para Adri si en la escuela ya comió la misma proteína que la cena

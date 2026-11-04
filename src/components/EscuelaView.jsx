@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ClipboardPaste, Check } from 'lucide-react'
+import { Camera, Loader2 } from 'lucide-react'
 import { MENUS, DIAS } from '../data/menus.js'
 import { getCurrentWeekAndDay } from '../utils/dateUtils.js'
 import { mondayOf, mxYMD, addDays } from '../utils/weekCalc.js'
@@ -7,7 +7,7 @@ import {
   PROTEINAS,
   loadEscuela,
   saveEscuela,
-  splitByDay,
+  leerMenuFoto,
   dayInfo,
   adviceForAdri,
 } from '../utils/escuela.js'
@@ -33,17 +33,20 @@ export default function EscuelaView() {
 
   const [data, setData] = useState(() => ({ [thisMonday]: loadEscuela(thisMonday) }))
   const escuela = data[monday] ?? loadEscuela(monday)
-  const [pegado, setPegado] = useState('')
-  const [repartido, setRepartido] = useState(false)
+  const [leyendo, setLeyendo] = useState(false)
+  const [error, setError] = useState(null)
 
   const update = (next) => {
     saveEscuela(monday, next)
     setData(prev => ({ ...prev, [monday]: next }))
   }
 
-  const setTexto = (dia, texto) => {
+  const setCampo = (dia, campo, valor) => {
     // Al cambiar el texto se vuelve a detectar la proteína automáticamente
-    update({ ...escuela, [dia]: { texto } })
+    const prev = escuela[dia] || {}
+    const colacion = prev.colacion ?? ''
+    const comida = prev.comida ?? prev.texto ?? ''
+    update({ ...escuela, [dia]: { colacion, comida, [campo]: valor } })
   }
 
   const toggleProteina = (dia, p) => {
@@ -60,15 +63,19 @@ export default function EscuelaView() {
     update({ ...escuela, [dia]: { ...escuela[dia], verdura: !info.verdura } })
   }
 
-  const handleRepartir = () => {
-    const porDia = splitByDay(pegado)
-    if (Object.keys(porDia).length === 0) return
-    const next = { ...escuela }
-    Object.entries(porDia).forEach(([dia, texto]) => { next[dia] = { texto } })
-    update(next)
-    setPegado('')
-    setRepartido(true)
-    setTimeout(() => setRepartido(false), 2000)
+  const handleFoto = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setLeyendo(true)
+    setError(null)
+    try {
+      const porDia = await leerMenuFoto(file)
+      update({ ...escuela, ...porDia })
+    } catch (err) {
+      setError(err.message)
+    }
+    setLeyendo(false)
   }
 
   // Resumen de proteínas de la semana en la escuela
@@ -98,27 +105,18 @@ export default function EscuelaView() {
           ))}
         </div>
 
-        {/* Pegar menú completo */}
+        {/* Foto del menú */}
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 space-y-2">
-          <p className="text-sm font-semibold text-gray-800">Pega el menú de la escuela</p>
+          <p className="text-sm font-semibold text-gray-800">Sube la foto del menú de la escuela</p>
           <p className="text-xs text-gray-500">
-            Copia el menú (del PDF, WhatsApp o correo) y pégalo aquí. Se reparte solo por día si dice "Lunes", "Martes"...
+            Se leen solo la colación y la comida de cada día (el desayuno lo hace en casa). Luego puedes corregir el texto.
           </p>
-          <textarea
-            value={pegado}
-            onChange={e => setPegado(e.target.value)}
-            rows={4}
-            placeholder={'Lunes: Sopa de verduras, pollo con arroz\nMartes: ...'}
-            className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
-          />
-          <button
-            onClick={handleRepartir}
-            disabled={!pegado.trim()}
-            className="w-full flex items-center justify-center gap-2 bg-emerald-600 disabled:bg-gray-300 text-white text-sm font-semibold py-2 rounded-lg"
-          >
-            {repartido ? <Check className="w-4 h-4" /> : <ClipboardPaste className="w-4 h-4" />}
-            {repartido ? '¡Listo!' : 'Repartir por día'}
-          </button>
+          <label className={`w-full flex items-center justify-center gap-2 text-white text-sm font-semibold py-2.5 rounded-lg cursor-pointer ${leyendo ? 'bg-gray-400' : 'bg-emerald-600 hover:bg-emerald-700'}`}>
+            {leyendo ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
+            {leyendo ? 'Leyendo el menú…' : 'Subir foto'}
+            <input type="file" accept="image/*" className="hidden" onChange={handleFoto} disabled={leyendo} />
+          </label>
+          {error && <p className="text-xs text-red-700">No se pudo leer: {error}</p>}
         </div>
 
         {/* Resumen semanal */}
@@ -146,13 +144,17 @@ export default function EscuelaView() {
                 <span className="font-semibold text-sm text-gray-700">{dia}</span>
               </div>
               <div className="p-4 space-y-3">
-                <textarea
-                  value={escuela[dia]?.texto || ''}
-                  onChange={e => setTexto(dia, e.target.value)}
-                  rows={2}
-                  placeholder="¿Qué come Adri en la escuela?"
-                  className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
-                />
+                {[['colacion', 'Colación'], ['comida', 'Comida']].map(([campo, label]) => (
+                  <div key={campo}>
+                    <p className="text-xs text-gray-500 mb-1">{label}</p>
+                    <textarea
+                      value={escuela[dia]?.[campo] ?? (campo === 'comida' ? escuela[dia]?.texto || '' : '')}
+                      onChange={e => setCampo(dia, campo, e.target.value)}
+                      rows={campo === 'comida' ? 2 : 1}
+                      className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                    />
+                  </div>
+                ))}
 
                 {info && (
                   <div>
