@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ShoppingCart, RotateCcw, MessageCircle } from 'lucide-react'
 import { SHOPPING } from '../data/shopping.js'
 import { groupByCategoria, calcTotal } from '../utils/menuUtils.js'
 import { getCurrentWeekAndDay, getShoppingWeek } from '../utils/dateUtils.js'
+import { mondayOf, mxYMD } from '../utils/weekCalc.js'
 
 // Pollo que David pide consolidado (vale 2–3 semanas)
 const POLLO_ORDER = [
@@ -22,10 +23,15 @@ export default function ShoppingList() {
   const groups = groupByCategoria(items)
   const total = calcTotal(items)
 
-  // checked state: Set of "categoria|articulo"
+  // Lista compartida: se identifica por el lunes de esta semana + la semana del ciclo,
+  // así cada semana empieza vacía sola
+  const lista = `${mondayOf(mxYMD())}:S${shoppingWeek}`
+  const storageKey = `${STORAGE_KEY}:${lista}`
+
+  // checked state: Set of "categoria|articulo" (copia local para abrir rápido)
   const [checked, setChecked] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY)
+      const saved = localStorage.getItem(storageKey)
       return saved ? new Set(JSON.parse(saved)) : new Set()
     } catch {
       return new Set()
@@ -33,22 +39,60 @@ export default function ShoppingList() {
   })
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...checked]))
-  }, [checked])
+    try {
+      localStorage.setItem(storageKey, JSON.stringify([...checked]))
+    } catch {
+      // sin almacenamiento disponible
+    }
+  }, [checked, storageKey])
+
+  // Momento del último toque en este teléfono: un poco después se ignora el servidor, que aún no lo tiene
+  const ultimoToque = useRef(0)
+
+  // Trae del servidor lo que marcaron los demás, y lo repite cada 5 segundos mientras la lista está abierta
+  useEffect(() => {
+    let cancelado = false
+    const cargar = async () => {
+      try {
+        const res = await fetch(`/api/super?lista=${encodeURIComponent(lista)}`)
+        if (!res.ok || cancelado) return
+        const { items } = await res.json()
+        if (!cancelado && Date.now() - ultimoToque.current > 3000) setChecked(new Set(items))
+      } catch {
+        // sin conexión: se queda la copia local
+      }
+    }
+    cargar()
+    const timer = setInterval(() => {
+      if (document.visibilityState === 'visible') cargar()
+    }, 5000)
+    return () => {
+      cancelado = true
+      clearInterval(timer)
+    }
+  }, [lista])
 
   const toggle = (key) => {
+    const marcar = !checked.has(key)
+    ultimoToque.current = Date.now()
     setChecked((prev) => {
       const next = new Set(prev)
-      if (next.has(key)) {
-        next.delete(key)
-      } else {
-        next.add(key)
-      }
+      if (marcar) next.add(key)
+      else next.delete(key)
       return next
     })
+    fetch('/api/super', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lista, item: key, checked: marcar }),
+    }).catch(() => {})
   }
 
-  const reset = () => setChecked(new Set())
+  const reset = () => {
+    if (!window.confirm('¿Desmarcar toda la lista para todos?')) return
+    setChecked(new Set())
+    fetch(`/api/super?lista=${encodeURIComponent(lista)}`, { method: 'DELETE' }).catch(() => {})
+  }
 
   const totalChecked = checked.size
   const totalItems = items.length

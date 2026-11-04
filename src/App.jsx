@@ -5,7 +5,7 @@ import WeekView from './components/WeekView.jsx'
 import ShoppingList from './components/ShoppingList.jsx'
 import Settings from './components/Settings.jsx'
 import EscuelaView from './components/EscuelaView.jsx'
-import { syncFromServer, SYNC_EVENT } from './utils/sync.js'
+import { syncFromServer, checkNewVersion, SYNC_EVENT } from './utils/sync.js'
 
 const TABS = [
   { id: 'hoy', label: 'Hoy', Icon: Home },
@@ -22,15 +22,24 @@ function App() {
 
   useEffect(() => {
     const refresh = () => setVersion(v => v + 1)
-    const onVisible = () => { if (document.visibilityState === 'visible') syncFromServer() }
+    const onVisible = () => {
+      if (document.visibilityState !== 'visible') return
+      syncFromServer()
+      checkNewVersion()
+    }
     window.addEventListener(SYNC_EVENT, refresh)
     window.addEventListener('weekConfigChanged', refresh)
     document.addEventListener('visibilitychange', onVisible)
     syncFromServer()
+    // Con la app abierta: datos compartidos cada 20 s, versión nueva cada 5 min
+    const syncTimer = setInterval(() => { if (document.visibilityState === 'visible') syncFromServer() }, 20000)
+    const versionTimer = setInterval(() => { if (document.visibilityState === 'visible') checkNewVersion() }, 300000)
     return () => {
       window.removeEventListener(SYNC_EVENT, refresh)
       window.removeEventListener('weekConfigChanged', refresh)
       document.removeEventListener('visibilitychange', onVisible)
+      clearInterval(syncTimer)
+      clearInterval(versionTimer)
     }
   }, [])
 
