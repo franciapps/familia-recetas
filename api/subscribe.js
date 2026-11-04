@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   if (error) {
     console.error('Error al guardar suscripción:', error)
-    return res.status(500).json({ error: 'Error interno' })
+    return res.status(500).json({ error: 'Error interno', detalle: error.message })
   }
 
   return res.status(201).json({ ok: true })
