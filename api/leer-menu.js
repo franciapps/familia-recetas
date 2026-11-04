@@ -17,9 +17,12 @@ const MenuEscuela = z.object({
 
 const PROMPT = `Esta es la foto del menú semanal de la escuela de un niño de 3 años.
 Para cada día de lunes a viernes que aparezca, transcribe en español:
-- colacion: la colación / snack / refrigerio
+- colacion: la colación / merienda / snack / refrigerio
 - comida: la comida (todos los platos: sopa, plato fuerte, guarnición, postre, agua)
 Ignora por completo el desayuno: el niño desayuna en casa.
+El niño NO está en los grupos "LAC" (lactantes) ni "MAT 1" / "MAT1" (maternal 1): si la colación
+o la merienda tiene versiones marcadas con LAC o MAT 1, ignóralas y transcribe solo la versión
+que no lleva esas etiquetas.
 Copia los platos tal como están escritos, sin inventar. Si un campo no aparece para un día, déjalo vacío.`
 
 const MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
