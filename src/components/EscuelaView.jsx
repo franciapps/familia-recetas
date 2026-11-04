@@ -11,6 +11,7 @@ import {
   dayInfo,
   adviceForAdri,
 } from '../utils/escuela.js'
+import { saveEscuelaRemote } from '../utils/sync.js'
 
 const ESTADO_STYLES = {
   ok: 'bg-emerald-50 border-emerald-200 text-emerald-800',
@@ -38,6 +39,7 @@ export default function EscuelaView() {
 
   const update = (next) => {
     saveEscuela(monday, next)
+    saveEscuelaRemote(monday, next)
     setData(prev => ({ ...prev, [monday]: next }))
   }
 
@@ -199,7 +201,7 @@ export default function EscuelaView() {
         })}
 
         <p className="text-xs text-gray-400 text-center">
-          El menú de la escuela se guarda en este teléfono.
+          El menú de la escuela se comparte con todos los teléfonos de la familia.
         </p>
       </div>
     </div>

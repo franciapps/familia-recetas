@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Home, Calendar, ShoppingCart, Settings as SettingsIcon, School } from 'lucide-react'
 import TodayView from './components/TodayView.jsx'
 import WeekView from './components/WeekView.jsx'
 import ShoppingList from './components/ShoppingList.jsx'
 import Settings from './components/Settings.jsx'
 import EscuelaView from './components/EscuelaView.jsx'
+import { syncFromServer, SYNC_EVENT } from './utils/sync.js'
 
 const TABS = [
   { id: 'hoy', label: 'Hoy', Icon: Home },
@@ -16,6 +17,22 @@ const TABS = [
 
 function App() {
   const [activeTab, setActiveTab] = useState('hoy')
+  // Cambia cuando llegan datos nuevos del servidor, para volver a pintar la pestaña
+  const [version, setVersion] = useState(0)
+
+  useEffect(() => {
+    const refresh = () => setVersion(v => v + 1)
+    const onVisible = () => { if (document.visibilityState === 'visible') syncFromServer() }
+    window.addEventListener(SYNC_EVENT, refresh)
+    window.addEventListener('weekConfigChanged', refresh)
+    document.addEventListener('visibilitychange', onVisible)
+    syncFromServer()
+    return () => {
+      window.removeEventListener(SYNC_EVENT, refresh)
+      window.removeEventListener('weekConfigChanged', refresh)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [])
 
   const renderTab = () => {
     switch (activeTab) {
@@ -38,7 +55,7 @@ function App() {
     <div className="min-h-screen bg-gray-50 flex flex-col max-w-md mx-auto relative">
       {/* Main content scrollable area */}
       <div className="flex-1 overflow-y-auto pb-16">
-        {renderTab()}
+        <div key={version}>{renderTab()}</div>
       </div>
 
       {/* Bottom navigation */}
