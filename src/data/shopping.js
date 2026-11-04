@@ -7,7 +7,7 @@ export const SHOPPING = {
     // Carne / Pescado
     { categoria: 'Carne / Pescado', articulo: 'Pechuga de pollo molida (albóndigas)', cantidad: '600 g', precio: 120 },
     { categoria: 'Carne / Pescado', articulo: 'Pollo en piezas (salsa verde, apartar para Adri)', cantidad: '1.5 kg', precio: 150 },
-    { categoria: 'Carne / Pescado', articulo: 'Carne molida de res (picadillo)', cantidad: '700 g', precio: 140 },
+    { categoria: 'Carne / Pescado', articulo: 'Pechuga de pollo para milanesa', cantidad: '600 g', precio: 110 },
     { categoria: 'Carne / Pescado', articulo: 'Salmón en filetes (viernes)', cantidad: '500 g', precio: 300 },
     // Huevos / Lácteos
     { categoria: 'Huevos / Lácteos', articulo: 'Huevos Murlota', cantidad: '3 cajas (3 docenas) — pancakes diarios', precio: 285 },
@@ -49,6 +49,9 @@ export const SHOPPING = {
     // Tortillas
     { categoria: 'Tortillas y Pan', articulo: 'Tortillas de maíz frescas', cantidad: '1 kg', precio: 25 },
     { categoria: 'Verduras', articulo: 'Pepino', cantidad: '3 piezas', precio: 15 },
+    { categoria: 'Verduras', articulo: 'Camote', cantidad: '2 piezas', precio: 20 },
+    { categoria: 'Verduras', articulo: 'Pimiento', cantidad: '1 pieza', precio: 15 },
+    { categoria: 'Tortillas y Pan', articulo: 'Pan molido (milanesa)', cantidad: '250 g', precio: 20 },
     { categoria: 'Verduras', articulo: 'Apio', cantidad: '1 manojo', precio: 20 },
     { categoria: 'Verduras', articulo: 'Nopales', cantidad: '10 piezas', precio: 25 },
     { categoria: 'Huevos / Lácteos', articulo: 'Queso fresco', cantidad: '1/2 kg', precio: 60 },
