@@ -77,7 +77,7 @@ export function buildEmpleadasMessage(menuDay, lunchPeople) {
   if (cena?.prep?.length) {
     parts.push(`*Para la cena, por favor dejar listo (lavado, cortado y tapado en el refri):*\n${cena.prep.map(p => `• ${p}`).join('\n')}`)
   }
-  parts.push('Cocinar sin sal, cada quien le pone la suya. ¡Gracias! 🙏')
+  parts.push('Cocinar con poquita sal. ¡Gracias! 🙏')
   return parts.join('\n\n')
 }
 

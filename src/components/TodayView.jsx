@@ -160,7 +160,7 @@ export default function TodayView() {
         <div className="bg-rose-50 border border-rose-300 rounded-xl p-3 flex items-center gap-2">
           <span className="text-lg">🧂</span>
           <p className="text-sm font-medium text-rose-700">
-            Cocinar <strong>sin sal</strong> — cada quien la agrega en su plato (Franci, 1 año, casi sin sal)
+            Cocinar con <strong>poquita sal</strong>
           </p>
         </div>
 
