@@ -3,7 +3,7 @@ import { DAY_NAMES } from '../src/utils/weekCalc.js'
 import { buildMorningMessage } from '../src/utils/menuUtils.js'
 import { isCronAuthorized, todayMX, getCurrentWeek, sendToAll } from './_shared.js'
 
-// Mañana (L–V): qué se cocina hoy y qué tienen que dejar listo Yola y Mari para la cena
+// Mañana (L–V): qué se cocina hoy y qué tienen que dejar listo Yola para la cena
 export default async function handler(req, res) {
   if (!isCronAuthorized(req)) return res.status(401).json({ error: 'No autorizado' })
 
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   if (!body) return res.status(200).json({ mensaje: 'Sin menú' })
 
   const result = await sendToAll('morning', {
-    title: '¡Buenos días! Instrucciones para Yola y Mari 🔪',
+    title: '¡Buenos días! Instrucciones para Yola 🔪',
     body,
   })
   return res.status(200).json({ ok: true, ...result })

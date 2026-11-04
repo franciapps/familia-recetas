@@ -64,7 +64,7 @@ export function buildMorningMessage(menuDay) {
   return lines.join('\n')
 }
 
-// Mensaje de WhatsApp para Yola y Mari: comida del día + preparación de la cena
+// Mensaje de WhatsApp para Yola (la que cocina): comida del día + preparación de la cena
 export function buildEmpleadasMessage(menuDay, lunchPeople) {
   if (!menuDay) return ''
   const { comida, cena } = menuDay

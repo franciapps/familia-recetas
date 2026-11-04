@@ -199,7 +199,7 @@ export default function Settings() {
               { nombre: 'David', rol: 'Papá · cena' },
               { nombre: 'Franci', rol: 'Bebé (1 año) · comida y cena' },
               { nombre: 'Adri', rol: 'Niño (3 años) · come en la escuela, cena en casa' },
-              { nombre: 'Yola', rol: 'Empleada (L–V) · comida' },
+              { nombre: 'Yola', rol: 'Empleada (L–V) · cocina, come a mediodía' },
               { nombre: 'Mari', rol: 'Empleada (L–V) · comida' },
             ].map(({ nombre, rol }) => (
               <div key={nombre} className="flex justify-between items-center text-sm">

@@ -191,7 +191,7 @@ export default function TodayView() {
         {comida && (
           <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
             <div className="bg-emerald-50 px-4 py-2 border-b border-gray-200">
-              <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wide">Comida · la cocinan Yola y Mari</p>
+              <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wide">Comida · la cocina Yola</p>
             </div>
             <div className="p-4">
               <h2 className="text-base font-bold text-gray-900 mb-1">{comida.nombre}</h2>
@@ -211,7 +211,7 @@ export default function TodayView() {
               <a href={`https://wa.me/?text=${encodeURIComponent(empleadasMsg)}`} target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg w-full justify-center transition-colors">
                 <Share2 className="w-4 h-4" />
-                Mandar instrucciones a Yola y Mari
+                Mandar instrucciones a Yola
               </a>
             </div>
           </div>

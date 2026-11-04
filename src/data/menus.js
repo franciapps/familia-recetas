@@ -10,7 +10,7 @@
 // - Proteínas preferidas: frijoles negros, lentejas y pollo. Las lentejas nunca "a la vista":
 //   en tortitas, albóndigas, ragù o crema (a Adri no le gustan enteras).
 // - Nada de huevo como proteína principal: ya lo comemos todos los días en el desayuno.
-// - Comida: la cocinan Yola y Mari. Cena: rápida, Bimby o Cucina Botanica,
+// - Comida: la cocina Yola. Cena: rápida, Bimby o Cucina Botanica,
 //   con la verdura ya lavada y cortada por la mañana (`prep`).
 //
 // Campos:
@@ -172,7 +172,7 @@ export const MENUS = {
     Martes: {
       comida: {
         nombre: 'Tacos de pollo deshebrado con frijoles de olla',
-        descripcion: 'Pollo cocido y deshebrado en tortillas, con lechuga, jitomate y aguacate. Frijoles negros de olla aparte. Todo lo cocina la señora. Cocinar doble de frijoles: el jueves se usan en la cena.',
+        descripcion: 'Pollo cocido y deshebrado en tortillas, con lechuga, jitomate y aguacate. Frijoles negros de olla aparte. Todo lo cocina Yola. Cocinar doble de frijoles: el jueves se usan en la cena.',
         plato: { carbo: 'Tortillas', proteina: 'Pollo + frijoles negros', verdura: 'Lechuga, jitomate, aguacate' },
         proteina: 'pollo',
         legumbre: 'frijoles',
